@@ -3,6 +3,11 @@
 import engines.simple as simple
 import engines.temis as temis
 import engines.retresco as retresco
+import engines.alchemy as alchemy
+import engines.repust as repustate
+import engines.linguasys as linguasys
+import engines.semant as semantria
+import engines.txtrazor as textrazor
 
 def dedup_list(input_list):
 	output=[]
@@ -11,28 +16,24 @@ def dedup_list(input_list):
 			output.append(elem)	
 	return output		
 
-
 test_text = "Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
+engines = [textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
-print test_text
+if __name__ == '__main__':
+	
+	print test_text
 
-entities_retresco = retresco.extract_entities(test_text)
-entities_nltk = simple.extract_entities(test_text.decode("utf-8"))
-entities_temis = temis.extract_entities(test_text)
+	for engine in engines:
+		entities = engine.extract_entities(test_text)
+		print ""
+		print engine.__name__
+		for key,value in entities.items(): print value,key
 
-print ""
-print "Python NLTK"
-for key,value in entities_nltk.items(): print value,key
-print ""
-print "Temis"
-for key,value in entities_temis.items(): print value,key
-print ""
-print "Retresco"
-for key,value in entities_retresco.items(): print value,key
-
-
-pool = dedup_list(entities_temis.items() + entities_nltk.items() + entities_retresco.items())
-# print pool
+	# pool = dedup_list(entities_temis.items() 
+	#	+ entities_nltk.items() 
+	#	+ entities_retresco.items()
+	#	+ entities_alchemy.items())
+	# print pool
 
 
 
