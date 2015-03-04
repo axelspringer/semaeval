@@ -8,6 +8,8 @@ import engines.repust as repustate
 import engines.linguasys as linguasys
 import engines.semant as semantria
 import engines.txtrazor as textrazor
+import engines.bitext as bitext
+import engines.meaningcloud as meaningcloud
 
 def dedup_list(input_list):
 	output=[]
@@ -17,7 +19,7 @@ def dedup_list(input_list):
 	return output		
 
 test_text = "Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
-engines = [textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
+engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
 if __name__ == '__main__':
 	
