@@ -2,7 +2,11 @@
 import requests
 import json
 
-label_meaningcloud = {"Top>Location":"GEO", "Top>Person":"PERSON", "Top":"UNKNOWN"}
+label_meaningcloud = {
+"Top>Location":"GEO", 
+"Top>Person":"PERSON",
+"Top>Organization":"ORG", 
+"Top":"KEYWORD"}
 
 def convert_label(label):
 	prefix=">".join(label.split(">")[:2])

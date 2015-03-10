@@ -2,7 +2,24 @@
 
 from alchemyapi import AlchemyAPI
 
-label_alchemy = {"City":"GEO", "Facility":"GEO", "Person":"PERSON"}
+label_alchemy = {
+"City":"GEO", 
+"Facility":"GEO",
+"StateOrCounty":"GEO",
+"Country":"GEO",
+"Region":"GEO",
+"Continent":"GEO", 
+"Person":"PERSON",
+"Company":"ORG",
+"Organization":"ORG",
+"PrintMedia":"ORG",
+"JobTitle":"FUNCTION",
+"Quantity":"NUMBER",
+"SportingEvent":"EVENT",
+"Drug":"KEYWORD",
+"HealthCondition":"KEYWORD",
+"FieldTerminology":"KEYWORD"
+}
 
 def convert_label(label):
 	if label in label_alchemy:

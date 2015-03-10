@@ -2,7 +2,15 @@
 import requests
 from xml.etree import ElementTree
 
-label_linguasys = {"person":"PERSON", "location": "GEO"}
+label_linguasys = {
+"person" : "PERSON", 
+"location": "GEO",
+"organisation": "ORG",
+"administrative unit": "ORG",
+"date" : "DATE",
+"time" : "DATE",
+"aspect" : "KEYWORD",
+"abbreviation" : "KEYWORD"}
 
 def convert_label(label):
 	prefix="/".join(label.split("/")[:3])

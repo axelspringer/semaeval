@@ -7,6 +7,7 @@ pip install semantria_sdk
 pip install textrazor
 
 # for rss reader
+pip install pyaml
 pip install feedparser
 pip install beautifulsoup4
 

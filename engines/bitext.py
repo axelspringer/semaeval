@@ -3,7 +3,7 @@ import requests
 import json
 
 # see http://www.bitext.com/btxt_docs/Bitext_API-Reference-Manual_EN.pdf, page 33
-label_bitext = {3:"GEO", 1:"PERSON", 0: "UNKNOWN"}
+label_bitext = {19:"NUMBER", 10:"DATE",6:"ORG", 3:"GEO", 1:"PERSON", 0: "KEYWORD"}
 
 def convert_label(label):
 	if label in label_bitext:

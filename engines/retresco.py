@@ -2,7 +2,12 @@
 import requests
 import json
 
-label_retresco = {"geos":"GEO", "persons":"PERSON"}
+label_retresco = {
+"geos":"GEO", 
+"persons":"PERSON", 
+"orgs":"ORG",
+"products":"PRODUCT",
+"keywords":"KEYWORD"}
 
 def convert_label(label):
 	if label in label_retresco:

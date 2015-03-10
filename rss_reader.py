@@ -5,6 +5,9 @@ import feedparser
 import requests
 from boilerpipe.extract import Extractor
 import codecs
+import yaml
+import email.utils
+import datetime 
 
 polish_dir = "examples/polish/"
 
@@ -40,8 +43,14 @@ if __name__ == '__main__':
 		print url
 		extractor = Extractor(extractor="ArticleExtractor", url=url)
 		
-		filename = url.split("/")[-1].split(",")[0]
-		with codecs.open(polish_dir + filename, "w","utf-8") as f: 
-			f.write(item["published"] +"\n")
-			f.write(url + "\n\n")
-			f.write(extractor.getText())
+		filename = url.split(",")[-1].split(".")[0]
+
+		date = email.utils.parsedate_tz(item["published"])
+		timestamp = email.utils.mktime_tz(date)
+		iso = datetime.datetime.utcfromtimestamp(timestamp).isoformat()
+
+		data = {"text": extractor.getText(), "date": iso, "url":url }
+
+		with open(polish_dir + filename + ".yml", "w") as f: 
+			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
+			yaml.safe_dump(data, f, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)

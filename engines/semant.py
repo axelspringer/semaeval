@@ -7,7 +7,11 @@ import time
 serializer = semantria.JsonSerializer()
 session = semantria.Session("1e9489fd-9870-45c3-9cd2-0890aafad3fa", "02f32cbb-0e0a-4150-a93a-b36d28b99cfd", serializer, use_compression=True)
 
-label_semantria = {"Place":"GEO", "Person":"PERSON"}
+label_semantria = {
+"Place":"GEO", 
+"Person":"PERSON", 
+"Company":"ORG",
+"Job Title":"FUNCTION"}
 
 def convert_label(label):
 	if label in label_semantria:
