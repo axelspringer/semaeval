@@ -8,7 +8,7 @@ import dateutil.parser
 import yaml
 import re
 
-english_dir = "examples/english/"
+english_dir = "input/english/"
 
 regex = re.compile("article\d+")
 

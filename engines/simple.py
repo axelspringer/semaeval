@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import nltk
 
-label_nltk = {"GPE":"GEO", "ORGANIZATION":"ORG"}
+label_nltk = {"GPE":"GEO","LOCATION":"GEO","ORGANIZATION":"ORG"}
 
 def convert_label(label):
 	if label in label_nltk:

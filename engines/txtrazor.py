@@ -14,7 +14,8 @@ label_textrazor = {
 "Drug":"KEYWORD",
 "ChemicalSubstance":"KEYWORD",
 "Work":"PRODUCT",
-"EthnicGroup":"KEYWORD"}
+"EthnicGroup":"KEYWORD",
+"URL":"URL"}
 
 def convert_labels(labels):
 	for label in labels:

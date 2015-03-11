@@ -9,7 +9,7 @@ import yaml
 import email.utils
 import datetime 
 
-polish_dir = "examples/polish/"
+polish_dir = "input/polish/"
 
 rss_fakt = "http://fakt.pl.feedsportal.com/c/33674/f/621991/index.rss"
 # has a paywall
