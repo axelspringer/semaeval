@@ -15,7 +15,7 @@ def convert_label(label):
 	else:
 		return label
 
-def extract_entities(text):
+def extract_entities(text, lang):
 	entities={}
 	data={}
 	data["body"]=text

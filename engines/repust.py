@@ -27,7 +27,9 @@ label_repustate = {
 "health.vaccine": "KEYWORD",
 "travel.hotel":"KEYWORD",
 "travel.accommodation":"KEYWORD",
-"health.physician": "PERSON"}
+"health.physician": "PERSON",
+"sports.sports_team_coach": "PERSON",
+"finance.currency": "CURRENCY"}
 
 def convert_label(label):
 	if label in label_repustate:
@@ -35,10 +37,11 @@ def convert_label(label):
 	else:
 		return label
 
-def extract_entities(text):
+def extract_entities(text, lang):
 	entities = {}
 	client = repustate.Client(api_key='317542394cddce0baf6b3ec698d92198e2b6e4a7')
-	response = client.entities(text=text.encode("utf-8"), lang="en")
+    # see https://www.repustate.com/docs/
+	response = client.entities(text=text.encode("utf-8"), lang=lang)
 
 	for k,v in response['entities'].items():
 		key = k

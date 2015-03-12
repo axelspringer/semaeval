@@ -30,7 +30,7 @@ def collect_results(text, engines):
 
 		results[engine]={}
 
-		entities = engine.extract_entities(text)
+		entities = engine.extract_entities(text, "en")
 		print ""
 		print engine.__name__
 		for entity,category in entities.items(): 

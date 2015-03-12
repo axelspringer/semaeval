@@ -6,6 +6,7 @@ import requests
 from boilerpipe.extract import Extractor
 import codecs
 import yaml
+import utils_yaml
 import email.utils
 import datetime 
 
@@ -34,23 +35,26 @@ def convert_url(url):
 		.replace("0S",""))
 	return "http://" + temp2
 
+def run():
+    feed = feedparser.parse(rss_fakt)
+    for item in feed["items"]:
+        url = convert_url(item["link"])
+        print item["published"]
+        print url
+        extractor = Extractor(extractor="ArticleExtractor", url=url)
+
+        filename = url.split(",")[-1].split(".")[0]
+
+        date = email.utils.parsedate_tz(item["published"])
+        timestamp = email.utils.mktime_tz(date)
+        iso = datetime.datetime.utcfromtimestamp(timestamp).isoformat()
+
+        data = {"text": extractor.getText(), "date": iso, "url":url }
+
+        with open(polish_dir + filename + ".yml", "w") as f:
+            # see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
+            utils_yaml.ordered_dump(data, f, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+
+
 if __name__ == '__main__':
-
-	feed = feedparser.parse(rss_fakt)
-	for item in feed["items"]:
-		url = convert_url(item["link"])
-		print item["published"]
-		print url
-		extractor = Extractor(extractor="ArticleExtractor", url=url)
-		
-		filename = url.split(",")[-1].split(".")[0]
-
-		date = email.utils.parsedate_tz(item["published"])
-		timestamp = email.utils.mktime_tz(date)
-		iso = datetime.datetime.utcfromtimestamp(timestamp).isoformat()
-
-		data = {"text": extractor.getText(), "date": iso, "url":url }
-
-		with open(polish_dir + filename + ".yml", "w") as f: 
-			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-			yaml.safe_dump(data, f, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+    run()

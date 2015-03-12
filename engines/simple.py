@@ -10,7 +10,7 @@ def convert_label(label):
 		return label
 
 # see http://timmcnamara.co.nz/post/2650550090/extracting-names-with-6-lines-of-python-code
-def extract_entities(text):
+def extract_entities(text, lang):
 	entities={}
 	for sent in nltk.sent_tokenize(text):
 		for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):

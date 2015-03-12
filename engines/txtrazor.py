@@ -3,6 +3,7 @@ from textrazor import TextRazor
 
 client = TextRazor(api_key="18f6730269b89e61a2d9c89853960328aa5511226830cf32025ce43e", extractors=["entities", "topics"])
 
+# see also https://www.textrazor.com/types
 label_textrazor = {
 "Place":"GEO", 
 "Person":"PERSON", 
@@ -15,6 +16,7 @@ label_textrazor = {
 "ChemicalSubstance":"KEYWORD",
 "Work":"PRODUCT",
 "EthnicGroup":"KEYWORD",
+"Currency":"CURRENCY",
 "URL":"URL"}
 
 def convert_labels(labels):
@@ -26,7 +28,7 @@ def convert_labels(labels):
 	else:
 		return labels		
 
-def extract_entities(text):
+def extract_entities(text,lang):
 	entities={}
 	rp = client.analyze(text)
 	for entity in rp.entities():
