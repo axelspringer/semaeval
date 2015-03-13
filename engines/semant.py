@@ -14,7 +14,8 @@ label_semantria = {
 "Place":"GEO", 
 "Person":"PERSON", 
 "Company":"ORG",
-"Job Title":"FUNCTION"}
+"Job Title":"FUNCTION",
+"Quote":"QUOTE"}
 
 # in semantria the configuration is stored on the server and has an id
 # You can get the config id for a language via
@@ -48,15 +49,14 @@ def extract_entities(text, lang):
 	entities = {}
 	doc = {"id": str(uuid.uuid4()).replace("-", ""), "text": text}
 	config_id = convert_lang(lang)
-	print config_id
 	status = session.queueDocument(doc, config_id=config_id)
 	if status == 202:
 		results = []
 
 		while len(results) < 1:
 			time.sleep(2)
-			# get processed documents
-			status = session.getProcessedDocuments()
+			# get processed documents (you have use the same config_id as for queuing!)
+			status = session.getProcessedDocuments(config_id=config_id)
 			results.extend(status)
 
 		for data in results:
