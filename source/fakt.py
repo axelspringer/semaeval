@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import email.utils
+import datetime
+
 import feedparser
 from boilerpipe.extract import Extractor
 import yaml
 import utils_yaml
-import email.utils
-import datetime 
 
-polish_dir = "../input/pl/"
+
+polish_dir = "input/pl/"
 
 rss_fakt = "http://fakt.pl.feedsportal.com/c/33674/f/621991/index.rss"
 

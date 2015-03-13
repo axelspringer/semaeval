@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import feedparser
-import requests
 import argparse
 from xml.etree import ElementTree
+
+import feedparser
+import requests
 import dateutil.parser
 import yaml
 import utils_yaml
 
-german_dir = "../input/de/"
+
+german_dir = "input/de/"
 
 rss_bild = "http://rss.bild.de/bild.xml"
 

@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import email.utils
+import datetime
+
 import feedparser
 from boilerpipe.extract import Extractor
 import yaml
 import utils_yaml
-import email.utils
-import datetime 
 
-french_dir = "../input/fr/"
+
+french_dir = "input/fr/"
 
 rss_huffingtonpost = "http://www.huffingtonpost.fr/feeds/index.xml"
 

@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import feedparser
 import urlparse
-import requests
 import argparse
 from xml.etree import ElementTree
+import re
+import os
+
+import feedparser
+import requests
 import dateutil.parser
 import yaml
-import utils_yaml
-import re
 
-english_dir = "../input/en/"
+import storage
 
+store_dir = "input/"
 rss_welt = "http://www.welt.de/?service=Rss"
-
 regex = re.compile("article\d+")
 
 
@@ -52,20 +53,50 @@ def article_from_url(url):
 		if child.text and child.text.strip():
 			text = text + child.text.strip() + "\n"
 
-	data = {"text": text, "date": iso, "url": url}
+	filename = regex.findall(url)[0] + ".yml"
+
+	data = {"text": text, "date": iso, "url": url, "filename": filename }
 	return data
 
+def store_articles(articles, prefix):
+	dir = store_dir + prefix + "/"
+	# create the directory if it does not yet exist
+	# see http://stackoverflow.com/questions/273192/in-python-check-if-a-directory-exists-and-create-it-if-necessary
+	try:
+		os.makedirs(dir)
+	except OSError:
+		if not os.path.isdir(dir):
+			raise
+
+	# see http://stackoverflow.com/questions/998938/handle-either-a-list-or-single-integer-as-an-argument
+	if type(articles) is not list: articles = [articles]
+
+	for article in articles:
+		path = dir + article["filename"]
+		print "Storing file: ", path
+		with open(path, "w") as f:
+			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
+			storage.ordered_dump(article, f, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+
+def load_articles(prefix):
+	articles = []
+	dir = store_dir + prefix + "/"
+
+	for filename in os.listdir(dir):
+		if filename.endswith(".yml"):
+			with open(dir + filename,"r") as f:
+				data = storage.ordered_load(f, yaml.SafeLoader)
+				articles.append(data)
+	return articles
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Download article text from welt.de url.')
 	parser.add_argument("url", metavar="URL", type=str, nargs="?", help="The url to download text from.")
+	parser.add_argument("-l","--lang", type=str, help="Language of the text (two-letter code: en, de, fr, ...)", required=True)
 
 	args=parser.parse_args()
 
 	url = args.url
 	if url:
 		article = article_from_url(url)
-		filename = regex.findall(url)[0]
-		with open(english_dir + filename + ".yml", "w") as f:
-			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-			utils_yaml.ordered_dump(article, f, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+		store_articles(article, args.lang)
