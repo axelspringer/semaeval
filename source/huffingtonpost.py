@@ -29,7 +29,9 @@ def articles_from_feed():
 			timestamp = email.utils.mktime_tz(date)
 			iso = datetime.datetime.utcfromtimestamp(timestamp).isoformat()
 
-			data = {"text": extractor.getText(), "date": iso, "url":url }
+			filename = url.split(",")[-1].split(".")[0]
+
+			data = {"text": extractor.getText(), "date": iso, "url":url, "filename": filename }
 		except Exception as e:
 			print "Error downloading article from " + url
 		articles.append(data)

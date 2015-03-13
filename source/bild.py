@@ -62,7 +62,9 @@ def article_from_url(url):
 		if child.text and child.text.strip():
 			text = text + child.text.strip() +"\n"
 
-	return {"text": text, "date": iso, "url": url}
+	filename = url.split(".")[-3]
+
+	return {"text": text, "date": iso, "url": url, "filename" : filename}
 
 
 if __name__ == "__main__":
