@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import engines.simple as simple
-import engines.temis as temis
-import engines.retresco as retresco
-import engines.alchemy as alchemy
-import engines.repust as repustate
-import engines.linguasys as linguasys
-import engines.semant as semantria
-import engines.txtrazor as textrazor
-import engines.bitext as bitext
-import engines.meaningcloud as meaningcloud
+import engine.simple as simple
+import engine.temis as temis
+import engine.retresco as retresco
+import engine.alchemy as alchemy
+import engine.repust as repustate
+import engine.linguasys as linguasys
+import engine.semant as semantria
+import engine.txtrazor as textrazor
+import engine.bitext as bitext
+import engine.meaningcloud as meaningcloud
 
 import os
 import yaml
 import utils_yaml
 
-input_dir = "input/english/"
-output_dir = "output/english/"
+input_dir = "input/en/"
+output_dir = "output/en/"
 
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 

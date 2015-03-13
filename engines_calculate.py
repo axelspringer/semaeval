@@ -5,7 +5,7 @@ import os
 import yaml
 import utils_yaml
 
-result_dir = "result/english/"
+result_dir = "result/en/"
 
 def precision(tp,tn,fp,fn):
 	return tp/float(tp + fp)
