@@ -18,6 +18,14 @@ store_dir = "input/"
 rss_welt = "http://www.welt.de/?service=Rss"
 regex = re.compile("article\d+")
 
+default_urls = [
+"http://www.welt.de/english-news/article3181485/Germany-is-the-most-beloved-country-worldwide.html",
+"http://www.welt.de/english-news/article4174441/United-States-to-begin-swine-flu-vaccine-trials.html",
+"http://www.welt.de/english-news/article4201214/Are-Rihanna-and-Chris-Brown-back-together.html",
+"http://www.welt.de/english-news/article4209330/Dr-Murray-gave-Michael-Jackson-lethal-injection.html",
+"http://www.welt.de/english-news/article4216441/Soldiers-on-the-hunt-for-members-of-Islamic-sect.html"
+]
+
 
 # Helper method to get the real url of the article
 def convert_url(url):
@@ -100,3 +108,8 @@ if __name__ == "__main__":
 	if url:
 		article = article_from_url(url)
 		store_articles(article, args.lang)
+	else:
+		# download some default articles
+		for url in default_urls:
+			article = article_from_url(url)
+			store_articles(article, args.lang)
