@@ -4,6 +4,7 @@
 import os
 import yaml
 import utils_yaml
+import math
 
 import matplotlib.pyplot as pyplot
 
@@ -21,33 +22,60 @@ def f1_score(precision, recall):
 def mean(l):
 	return sum(l) / float(len(l))
 
+# Sample standard deviation
+def sstddev(l):
+	n = len(data)
+	if n < 2:
+		raise ValueError('Sample standard deviation requires at least two data points')
+
+	xbar = mean(l)
+	svariance = 1.0/(n-1) * sum((x-xbar)**2 for x in l)
+	return math.sqrt(svariance)
+
 def plot_results():
 	data = yaml.load(open("results.yml"))
 
+	plot_data = []
+
 	for category in ["PERSON","GEO","ORG","KEYWORD"]:
+
+		for engine, results in data.items():
+			if category in results:
+				plot_data.append((engine, category, results[category]["f1_score"], results[category]["precision"], results[category]["recall"]))
+
+	pyplot.style.use('ggplot')
+	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD"]):
+		index = 0
+		labels = []
 		data_x1 = []
 		data_y1 = []
 		data_y2 = []
 		data_y3 = []
-		labels = []
-		index = 0
-		for engine, results in data.items():
-			if category in results:
-				index+=1
-				labels.append(engine)
-				data_x1.append(index)
-				data_y1.append(results[category]["f1_score"])
-				data_y2.append(results[category]["precision"])
-				data_y3.append(results[category]["recall"])
 
-		data_x2 = [ x + 0.25 for x in data_x1 ]
-		data_x3 = [ x + 0.50 for x in data_x1 ]
+		for label, title, y1, y2, y3 in sorted(plot_data, key=lambda item: item[2], reverse=True):
+			if title == category:
+				index += 1
+				labels.append(label)
+				data_x1.append(index)
+				data_y1.append(y1)
+				data_y2.append(y2)
+				data_y3.append(y3)
+
+		data_x2 = [x + 0.25 for x in data_x1]
+		data_xlabel = [x + 0.375 for x in data_x1]
+		data_x3 = [x + 0.50 for x in data_x1]
+		pyplot.subplot(4,1,number + 1)
 		pyplot.title(category)
-		pyplot.xticks(data_x2, labels, rotation=90)
-		pyplot.bar(data_x1, data_y1, width = 0.25, color='red')
-		pyplot.bar(data_x2, data_y2, width = 0.25, color='blue')
-		pyplot.bar(data_x3, data_y3, width = 0.25, color='green')
-		pyplot.show()
+		pyplot.xticks(data_xlabel, labels)
+		# for color style, see here https://tonysyu.github.io/mpltools/auto_examples/style/plot_ggplot.html
+		y1 = pyplot.bar(data_x1, data_y1, width=0.25, color=pyplot.rcParams['axes.color_cycle'][1])
+		y2 = pyplot.bar(data_x2, data_y2, width=0.25, color=pyplot.rcParams['axes.color_cycle'][2])
+		y3 = pyplot.bar(data_x3, data_y3, width=0.25, color=pyplot.rcParams['axes.color_cycle'][3])
+		pyplot.legend((y1[0],y2[0],y3[0]),("F1 score", "precision", "recall"))
+
+
+	pyplot.tight_layout()
+	pyplot.show()
 
 
 if __name__ == '__main__':

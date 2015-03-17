@@ -23,6 +23,9 @@ store_dir = "output/"
 
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
+# if more than THRESHOLD engines return the same entity, we assume the entity is relevant
+THRESHOLD = 1
+
 def collect_results(text, engines, lang):
 	results = {}
 	pool = {}
@@ -80,19 +83,19 @@ def detect_entities(articles, lang):
 				output[category]["undetected"] = []
 
 				for entity in entities:
-					# if an entity has been detected more than once, we assume it is relevant,
+					# if an entity has been detected more than THRESHOLD, we assume it is relevant,
 					# and so detecting it is a "true positive".
-					# Otherwise it is a "false positive"
-					if pool[category][entity] > 1:
+					# Otherwise it is a "false positive".
+					if pool[category][entity] > THRESHOLD:
 						output[category]["detected"].append({"TP": entity})
 					else:
 						output[category]["detected"].append({"FP": entity})
 				if category in pool:
 					for entity in set(pool[category]).difference(entities):
-						# if an entity has been detected more than once, we assume it is relevant,
+						# if an entity has been detected more than THRESHOLD, we assume it is relevant,
 						# and so not detecting it is a "false negative".
-						# Otherwise it is a "true negative"
-						if pool[category][entity] > 1:
+						# Otherwise it is a "true negative".
+						if pool[category][entity] > THRESHOLD:
 							output[category]["undetected"].append({"FN": entity})
 						else:
 							output[category]["undetected"].append({"TN": entity})
