@@ -35,14 +35,6 @@ def sstddev(l):
 def plot_results():
 	data = yaml.load(open("results.yml"))
 
-	plot_data = []
-
-	for category in ["PERSON","GEO","ORG","KEYWORD"]:
-
-		for engine, results in data.items():
-			if category in results:
-				plot_data.append((engine, category, results[category]["f1_score"], results[category]["precision"], results[category]["recall"]))
-
 	pyplot.style.use('ggplot')
 	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD"]):
 		index = 0
@@ -52,7 +44,7 @@ def plot_results():
 		data_y2 = []
 		data_y3 = []
 
-		for label, title, y1, y2, y3 in sorted(plot_data, key=lambda item: item[2], reverse=True):
+		for label, title, y1, y1_error, y2, y2_error, y3, y3_error in sorted(data, key=lambda item: item[2], reverse=True):
 			if title == category:
 				index += 1
 				labels.append(label)
@@ -80,9 +72,7 @@ def plot_results():
 
 if __name__ == '__main__':
 
-	precisions = {}
-	recalls = {}
-	f1_scores = {}
+	statistics = {}
 
 	for filename in os.listdir(result_dir):
 		if filename.endswith(".yml"):
@@ -91,17 +81,13 @@ if __name__ == '__main__':
 				
 				engine = filename.split(".")[0].split("_")[1]
 
-				if engine not in precisions:
-					precisions[engine] = {}
-					recalls[engine] = {}
-					f1_scores[engine] = {}
+				if engine not in statistics:
+					statistics[engine] = {}
 
 				for category in ["PERSON","GEO","ORG","KEYWORD"]:
 
-					if category not in precisions[engine]:
-						precisions[engine][category] = []
-						recalls[engine][category] = []
-						f1_scores[engine][category] = []
+					if category not in statistics[engine]:
+						statistics[engine][category] = []
 					
 					tp = 0
 					tn = 0
@@ -119,60 +105,28 @@ if __name__ == '__main__':
 						rec = recall(tp,tn,fp,fn)
 						f1 = f1_score(prec, rec)
 
-						precisions[engine][category].append(prec)
-						recalls[engine][category].append(rec)
-						f1_scores[engine][category].append(f1)
+						statistics[engine][category].append((f1, prec, rec))
 					except ZeroDivisionError:
 						pass	
 
-	results = {}
-	for engine,categories in precisions.items():
-		if engine not in results:
-			results[engine] = {}
+	results=[]
+	for engine, categories in statistics.items():
 		for category, values in categories.items():
+			temp = [engine,category]
 			if values:
-				prec_avg = mean(values)
-				if category not in results[engine]:
-					results[engine][category] = {"precision" : prec_avg}
-				else:
-					results[engine][category]["precision"] = prec_avg
-	for engine,categories in recalls.items():
-		if engine not in results:
-			results[engine] = {}
-		for category, values in categories.items():
-			if values:
-				recall_avg = mean(values)
-				if category not in results[engine]:
-					results[engine][category] = {"recall" : recall_avg}
-				else:
-					results[engine][category]["recall"] = recall_avg
-	for engine,categories in f1_scores.items():
-		if engine not in results:
-			results[engine] = {}
-		for category, values in categories.items():
-			if values:
-				f1_avg = mean(values)
-				if category not in results[engine]:
-					results[engine][category] = {"f1_score" : f1_avg}
-				else:
-					results[engine][category]["f1_score"] = f1_avg
+				# see https://stackoverflow.com/questions/19339/a-transpose-unzip-function-in-python-inverse-of-zip
+				stats = [(mean(data), sstddev(data)) if len(data) > 1 else (0,0) for data in zip(*values)]
+				for avg, sstd in stats:
+					temp.append(avg)
+					temp.append(sstd)
+			else:
+				temp.extend([0,0,0,0,0,0])
+			results.append(temp)
+
 	path = "results.yml"
 	print "Storing file: ", path
 	with open(path, "w") as out:
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-		utils_yaml.ordered_dump(results, out, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)		
+		utils_yaml.ordered_dump(results, out, Dumper=yaml.SafeDumper, width=200, encoding="utf-8", allow_unicode=True)
 
 	plot_results()
-
-		
-
-
-
-
-					
-
-
-
-				
-
-
