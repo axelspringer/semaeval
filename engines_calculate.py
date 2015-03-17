@@ -43,6 +43,9 @@ def plot_results():
 		data_y1 = []
 		data_y2 = []
 		data_y3 = []
+		data_y1_err = []
+		data_y2_err = []
+		data_y3_err = []
 
 		for label, title, y1, y1_error, y2, y2_error, y3, y3_error in sorted(data, key=lambda item: item[2], reverse=True):
 			if title == category:
@@ -52,6 +55,9 @@ def plot_results():
 				data_y1.append(y1)
 				data_y2.append(y2)
 				data_y3.append(y3)
+				data_y1_err.append(y1_error)
+				data_y2_err.append(y2_error)
+				data_y3_err.append(y3_error)
 
 		data_x2 = [x + 0.25 for x in data_x1]
 		data_xlabel = [x + 0.375 for x in data_x1]
@@ -60,9 +66,10 @@ def plot_results():
 		pyplot.title(category)
 		pyplot.xticks(data_xlabel, labels)
 		# for color style, see here https://tonysyu.github.io/mpltools/auto_examples/style/plot_ggplot.html
-		y1 = pyplot.bar(data_x1, data_y1, width=0.25, color=pyplot.rcParams['axes.color_cycle'][1])
-		y2 = pyplot.bar(data_x2, data_y2, width=0.25, color=pyplot.rcParams['axes.color_cycle'][2])
-		y3 = pyplot.bar(data_x3, data_y3, width=0.25, color=pyplot.rcParams['axes.color_cycle'][3])
+		# see also https://stackoverflow.com/questions/16776761/color-each-errorbar-with-different-color
+		y1 = pyplot.bar(data_x1, data_y1, yerr=data_y1_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][1], ecolor="grey")
+		y2 = pyplot.bar(data_x2, data_y2, yerr=data_y2_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][2], ecolor="grey")
+		y3 = pyplot.bar(data_x3, data_y3, yerr=data_y3_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][3], ecolor="grey")
 		pyplot.legend((y1[0],y2[0],y3[0]),("F1 score", "precision", "recall"))
 
 
