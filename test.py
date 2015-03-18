@@ -25,10 +25,3 @@ def run(text, lang):
 if __name__ == '__main__':
     print test_text
     run(test_text,"en")
-
-
-
-
-
-
-

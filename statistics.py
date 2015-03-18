@@ -7,8 +7,9 @@ import utils_yaml
 import math
 
 import matplotlib.pyplot as pyplot
+from itertools import groupby
 
-result_dir = "output/en/"
+result_dir = "output/"
 
 def precision(tp,tn,fp,fn):
 	return tp/float(tp + fp)
@@ -36,7 +37,7 @@ def plot_results():
 	data = yaml.load(open("results.yml"))
 
 	pyplot.style.use('ggplot')
-	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD"]):
+	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD", "TOTAL"]):
 		index = 0
 		labels = []
 		data_x1 = []
@@ -62,7 +63,7 @@ def plot_results():
 		data_x2 = [x + 0.25 for x in data_x1]
 		data_xlabel = [x + 0.375 for x in data_x1]
 		data_x3 = [x + 0.50 for x in data_x1]
-		pyplot.subplot(4,1,number + 1)
+		pyplot.subplot(5, 1, number + 1)
 		pyplot.title(category)
 		pyplot.xticks(data_xlabel, labels)
 		# for color style, see here https://tonysyu.github.io/mpltools/auto_examples/style/plot_ggplot.html
@@ -76,59 +77,84 @@ def plot_results():
 	pyplot.tight_layout()
 	pyplot.show()
 
+def load_articles(prefix):
+	articles = []
+	dir = result_dir + prefix + "/"
+
+	for filename in os.listdir(dir):
+		if filename.endswith(".yml"):
+			with open(dir + filename,"r") as f:
+				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
+				articles.append(data)
+	return articles
+
 
 if __name__ == '__main__':
 
+	articles = load_articles("en")
+
 	statistics = {}
+	for article in articles:
+		engine = article["engine"]
 
-	for filename in os.listdir(result_dir):
-		if filename.endswith(".yml"):
-			with open(result_dir + filename, "r") as f:
-				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
-				
-				engine = filename.split(".")[0].split("_")[1]
+		if engine not in statistics:
+			statistics[engine] = {}
 
-				if engine not in statistics:
-					statistics[engine] = {}
+		for category in ["PERSON","GEO","ORG","KEYWORD"]:
 
-				for category in ["PERSON","GEO","ORG","KEYWORD"]:
+			if category not in statistics[engine]:
+				statistics[engine][category] = []
 
-					if category not in statistics[engine]:
-						statistics[engine][category] = []
-					
-					tp = 0
-					tn = 0
-					fp = 0
-					fn = 0
+			tp = 0
+			tn = 0
+			fp = 0
+			fn = 0
 
-					for entities in (data[category]["detected"] + data[category]["undetected"]):
-						for key,value in entities.items():
-							if key == "TP": tp += 1
-							if key == "TN": tn += 1
-							if key == "FP": fp += 1
-							if key == "FN": fn += 1
-					try: 		
-						prec = precision(tp,tn,fp,fn)
-						rec = recall(tp,tn,fp,fn)
-						f1 = f1_score(prec, rec)
+			for entities in (article[category]["detected"] + article[category]["undetected"]):
+				for key,value in entities.items():
+					if key == "TP": tp += 1
+					if key == "TN": tn += 1
+					if key == "FP": fp += 1
+					if key == "FN": fn += 1
+			try:
+				prec = precision(tp,tn,fp,fn)
+				rec = recall(tp,tn,fp,fn)
+				f1 = f1_score(prec, rec)
 
-						statistics[engine][category].append((f1, prec, rec))
-					except ZeroDivisionError:
-						pass	
+				statistics[engine][category].append((f1, prec, rec))
+			except ZeroDivisionError:
+				pass
 
-	results=[]
+	results = []
 	for engine, categories in statistics.items():
 		for category, values in categories.items():
-			temp = [engine,category]
+			result = [engine, category]
 			if values:
 				# see https://stackoverflow.com/questions/19339/a-transpose-unzip-function-in-python-inverse-of-zip
-				stats = [(mean(data), sstddev(data)) if len(data) > 1 else (0,0) for data in zip(*values)]
+				stats = [(mean(data), sstddev(data)) if len(data) > 1 else (0, 0) for data in zip(*values)]
 				for avg, sstd in stats:
-					temp.append(avg)
-					temp.append(sstd)
+					result.append(avg)
+					result.append(sstd)
 			else:
-				temp.extend([0,0,0,0,0,0])
-			results.append(temp)
+				result.extend([0, 0, 0, 0, 0, 0])
+			results.append(result)
+
+	totals = []
+	# see https://stackoverflow.com/questions/773/how-do-i-use-pythons-itertools-groupby
+	for key, group in groupby(sorted(results), lambda x: x[0]):
+
+		results_by_key = list(group)
+
+		total = (key, "TOTAL",
+				mean([result[2] for result in results_by_key]),
+				mean([result[3] for result in results_by_key]),
+				mean([result[4] for result in results_by_key]),
+				mean([result[5] for result in results_by_key]),
+				mean([result[6] for result in results_by_key]),
+				mean([result[7] for result in results_by_key]))
+		totals.append(total)
+
+	results.extend(totals)
 
 	path = "results.yml"
 	print "Storing file: ", path
