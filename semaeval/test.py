@@ -17,11 +17,11 @@ engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguas
 
 def run(text, lang):
     for engine in engines:
-        entities = engine.extract_entities(text,lang)
+        entities = engine.extract_entities(text, lang)
         print ""
         print engine.__name__
-        for key,value in entities.items(): print value,key
+        for key, value in entities.items(): print value,key
 
 if __name__ == '__main__':
     print test_text
-    run(test_text,"en")
+    run(test_text, "en")

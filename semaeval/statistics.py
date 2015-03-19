@@ -106,7 +106,7 @@ def load_articles(prefix):
 
 if __name__ == '__main__':
 
-	articles = load_articles("en")
+	articles = load_articles("de")
 
 	statistics = {}
 	for article in articles:

@@ -18,26 +18,33 @@ import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
 import utils_yaml
 
-input_dir = "../input/"
-store_dir = "../output/"
+input_dir = "input/"
+store_dir = "output/"
 
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
+
+# bitext: buggy (down with html error messages)
+# repustate: slow
+# linguasys: slow
+# temis: demo switched off
+
+engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
 
-def collect_results(text, engines, lang):
+def collect_results(text, engines, lang, debug=False):
 	results = {}
 	pool = {}
 
 	for engine in engines:
-		results[engine] = {}
-
-		entities = engine.extract_entities(text, lang)
-		print ""
 		print engine.__name__
-		for entity,category in entities.items(): 
-			print category,entity
+		entities = engine.extract_entities(text, lang)
+
+		results[engine] = {}
+		for entity, category in entities.items():
+			if debug:
+				print category, entity
 
 			if category in results[engine]:
 				results[engine][category].add(entity)
@@ -60,11 +67,15 @@ def detect_entities(articles, lang):
 	for article in articles:
 		text = article["text"]
 
-		pool,results = collect_results(text, engines, lang)
+		if "url" in article:
+			print article["url"]
+		elif "filename" in article:
+			print article["filename"]
+
+		pool, results = collect_results(text, engines, lang)
 
 		for engine, categories in results.items():
-			engine_name = engine.__name__.split(".")[1]
-			print engine_name
+			engine_name = engine.__name__.split(".")[2]
 
 			output = OrderedDict(article)
 
