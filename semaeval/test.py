@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import engine.simple as simple
+from engine import simple
 import engine.temis as temis
 import engine.retresco as retresco
 import engine.alchemy as alchemy

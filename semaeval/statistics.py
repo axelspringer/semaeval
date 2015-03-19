@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import os
-import yaml
-import utils_yaml
 import math
-
-import matplotlib.pyplot as pyplot
 from itertools import groupby
 
-result_dir = "output/"
+import yaml
+import matplotlib.pyplot as pyplot
+
+import utils_yaml
+
+result_dir = "../output/"
 
 def precision(tp,tn,fp,fn):
 	return tp/float(tp + fp)
@@ -65,13 +66,27 @@ def plot_results():
 		data_x3 = [x + 0.50 for x in data_x1]
 		pyplot.subplot(5, 1, number + 1)
 		pyplot.title(category)
+		#pyplot.xticks(data_xlabel, ["" for x in data_x1])
 		pyplot.xticks(data_xlabel, labels)
 		# for color style, see here https://tonysyu.github.io/mpltools/auto_examples/style/plot_ggplot.html
 		# see also https://stackoverflow.com/questions/16776761/color-each-errorbar-with-different-color
 		y1 = pyplot.bar(data_x1, data_y1, yerr=data_y1_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][1], ecolor="grey")
 		y2 = pyplot.bar(data_x2, data_y2, yerr=data_y2_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][2], ecolor="grey")
 		y3 = pyplot.bar(data_x3, data_y3, yerr=data_y3_err, width=0.25, color=pyplot.rcParams['axes.color_cycle'][3], ecolor="grey")
-		pyplot.legend((y1[0],y2[0],y3[0]),("F1 score", "precision", "recall"))
+		pyplot.legend((y1[0], y2[0], y3[0]), ("F1 score", "precision", "recall"))
+
+		# pyplot.xticks(data_xlabel, ["" for x in data_x1])
+		# cell_y1 = ["%0.2f" % i for i in data_y1]
+		# cell_y2 = ["%0.2f" % i for i in data_y2]
+		# cell_y3 = ["%0.2f" % i for i in data_y3]
+		# col_widths = [0.1 for i in data_y1]
+		#
+		# cell_text = [cell_y1, cell_y2, cell_y3]
+		# pyplot.table(loc='bottom',
+		# 			 cellText=cell_text,
+		# 			 colLabels=labels,
+		# 			 rowLabels=("F1 score", "precision", "recall"),
+		# 			 colWidths=col_widths)
 
 
 	pyplot.tight_layout()

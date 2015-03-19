@@ -18,8 +18,8 @@ import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
 import utils_yaml
 
-input_dir = "input/"
-store_dir = "output/"
+input_dir = "../input/"
+store_dir = "../output/"
 
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
