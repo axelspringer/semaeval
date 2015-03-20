@@ -21,7 +21,7 @@ def extract_entities(text, lang):
 	entities={}
 	data={}
 	data["body"]=text
-	rp = requests.post('http://pideas-dh04/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data))
+	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=False)
 	result = rp.json()
 	categories = result["result"]["keywords"].items()
 	for category in categories:

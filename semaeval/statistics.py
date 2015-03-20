@@ -3,6 +3,7 @@
 
 import os
 import math
+import argparse
 from itertools import groupby
 
 import yaml
@@ -10,7 +11,7 @@ import matplotlib.pyplot as pyplot
 
 import utils_yaml
 
-result_dir = "../output/"
+result_dir = "output/"
 
 def precision(tp,tn,fp,fn):
 	return tp/float(tp + fp)
@@ -26,7 +27,7 @@ def mean(l):
 
 # Sample standard deviation
 def sstddev(l):
-	n = len(data)
+	n = len(l)
 	if n < 2:
 		raise ValueError('Sample standard deviation requires at least two data points')
 
@@ -34,9 +35,7 @@ def sstddev(l):
 	svariance = 1.0/(n-1) * sum((x-xbar)**2 for x in l)
 	return math.sqrt(svariance)
 
-def plot_results():
-	data = yaml.load(open("results.yml"))
-
+def plot_results(data):
 	pyplot.style.use('ggplot')
 	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD", "TOTAL"]):
 		index = 0
@@ -88,26 +87,16 @@ def plot_results():
 		# 			 rowLabels=("F1 score", "precision", "recall"),
 		# 			 colWidths=col_widths)
 
+	# print pyplot.rcParams
+
+	pyplot.rcParams['figure.figsize'] = 14.0, 10.0
+	# pyplot.rcParams['font.size'] = 5
+	# pyplot.rcParams['savefig.dpi'] = 200
 
 	pyplot.tight_layout()
 	pyplot.show()
 
-def load_articles(prefix):
-	articles = []
-	dir = result_dir + prefix + "/"
-
-	for filename in os.listdir(dir):
-		if filename.endswith(".yml"):
-			with open(dir + filename,"r") as f:
-				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
-				articles.append(data)
-	return articles
-
-
-if __name__ == '__main__':
-
-	articles = load_articles("de")
-
+def collect_data(articles):
 	statistics = {}
 	for article in articles:
 		engine = article["engine"]
@@ -139,7 +128,9 @@ if __name__ == '__main__':
 				statistics[engine][category].append((f1, prec, rec))
 			except ZeroDivisionError:
 				pass
+	return statistics
 
+def aggregate_result(statistics):
 	results = []
 	for engine, categories in statistics.items():
 		for category, values in categories.items():
@@ -153,7 +144,9 @@ if __name__ == '__main__':
 			else:
 				result.extend([0, 0, 0, 0, 0, 0])
 			results.append(result)
+	return results
 
+def compute_total(results):
 	totals = []
 	# see https://stackoverflow.com/questions/773/how-do-i-use-pythons-itertools-groupby
 	for key, group in groupby(sorted(results), lambda x: x[0]):
@@ -161,20 +154,56 @@ if __name__ == '__main__':
 		results_by_key = list(group)
 
 		total = (key, "TOTAL",
-				mean([result[2] for result in results_by_key]),
-				mean([result[3] for result in results_by_key]),
-				mean([result[4] for result in results_by_key]),
-				mean([result[5] for result in results_by_key]),
-				mean([result[6] for result in results_by_key]),
-				mean([result[7] for result in results_by_key]))
+				 mean([result[2] for result in results_by_key]),
+				 mean([result[3] for result in results_by_key]),
+				 mean([result[4] for result in results_by_key]),
+				 mean([result[5] for result in results_by_key]),
+				 mean([result[6] for result in results_by_key]),
+				 mean([result[7] for result in results_by_key]))
 		totals.append(total)
+	return totals
 
-	results.extend(totals)
+def load_articles(prefix):
+	articles = []
+	dir = result_dir + prefix + "/"
 
-	path = "results.yml"
+	for filename in os.listdir(dir):
+		if filename.endswith(".yml"):
+			with open(dir + filename,"r") as f:
+				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
+				articles.append(data)
+	return articles
+
+def store_results(results, lang):
+	path = lang + "_"+ "results.yml"
 	print "Storing file: ", path
 	with open(path, "w") as out:
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
 		utils_yaml.ordered_dump(results, out, Dumper=yaml.SafeDumper, width=200, encoding="utf-8", allow_unicode=True)
 
-	plot_results()
+def load_results(lang):
+	path = lang + "_"+ "results.yml"
+	with open(path, "r") as infile:
+		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
+		return utils_yaml.ordered_load(infile, yaml.SafeLoader)
+
+if __name__ == '__main__':
+
+	result_dir = "../output/"
+	parser = argparse.ArgumentParser(description='Compute statistics from enriched articles and plot results comparing the semantic engines.')
+	parser.add_argument("-l","--lang", type=str, help="Language of the text (two-letter code: en, de, fr, ...)", required=True)
+
+	args=parser.parse_args()
+
+	lang = args.lang
+
+	articles = load_articles(lang)
+
+	data = collect_data(articles)
+	results = aggregate_result(data)
+	results.extend(compute_total(results))
+
+	store_results(results, lang)
+
+	results = load_results(lang)
+	plot_results(results)
