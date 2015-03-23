@@ -13,17 +13,22 @@ import utils_yaml
 
 result_dir = "output/"
 
+
 def precision(tp,tn,fp,fn):
 	return tp/float(tp + fp)
+
 
 def recall(tp,tn,fp,fn):
 	return tp/float(tp + fn)	
 
+
 def f1_score(precision, recall):
 	return 2.0 * precision * recall / float(precision + recall)
 
+
 def mean(l):
 	return sum(l) / float(len(l))
+
 
 # Sample standard deviation
 def sstddev(l):
@@ -35,9 +40,11 @@ def sstddev(l):
 	svariance = 1.0/(n-1) * sum((x-xbar)**2 for x in l)
 	return math.sqrt(svariance)
 
+
 def plot_results(data):
 	pyplot.style.use('ggplot')
-	for number, category in enumerate(["PERSON", "GEO", "ORG", "KEYWORD", "TOTAL"]):
+	pyplot.rcParams['figure.figsize'] = 14.0, 10.0
+	for number, category in enumerate(["PERSON", "GEO", "ORG", "TOTAL"]):
 		index = 0
 		labels = []
 		data_x1 = []
@@ -89,12 +96,13 @@ def plot_results(data):
 
 	# print pyplot.rcParams
 
-	pyplot.rcParams['figure.figsize'] = 14.0, 10.0
+
 	# pyplot.rcParams['font.size'] = 5
 	# pyplot.rcParams['savefig.dpi'] = 200
 
 	pyplot.tight_layout()
 	pyplot.show()
+
 
 def collect_data(articles):
 	statistics = {}
@@ -104,7 +112,7 @@ def collect_data(articles):
 		if engine not in statistics:
 			statistics[engine] = {}
 
-		for category in ["PERSON","GEO","ORG","KEYWORD"]:
+		for category in ["PERSON", "GEO", "ORG"]:
 
 			if category not in statistics[engine]:
 				statistics[engine][category] = []
@@ -130,6 +138,7 @@ def collect_data(articles):
 				pass
 	return statistics
 
+
 def aggregate_result(statistics):
 	results = []
 	for engine, categories in statistics.items():
@@ -145,6 +154,7 @@ def aggregate_result(statistics):
 				result.extend([0, 0, 0, 0, 0, 0])
 			results.append(result)
 	return results
+
 
 def compute_total(results):
 	totals = []
@@ -163,6 +173,7 @@ def compute_total(results):
 		totals.append(total)
 	return totals
 
+
 def load_articles(prefix):
 	articles = []
 	dir = result_dir + prefix + "/"
@@ -174,6 +185,7 @@ def load_articles(prefix):
 				articles.append(data)
 	return articles
 
+
 def store_results(results, lang):
 	path = lang + "_"+ "results.yml"
 	print "Storing file: ", path
@@ -181,11 +193,13 @@ def store_results(results, lang):
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
 		utils_yaml.ordered_dump(results, out, Dumper=yaml.SafeDumper, width=200, encoding="utf-8", allow_unicode=True)
 
+
 def load_results(lang):
 	path = lang + "_"+ "results.yml"
 	with open(path, "r") as infile:
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
 		return utils_yaml.ordered_load(infile, yaml.SafeLoader)
+
 
 if __name__ == '__main__':
 

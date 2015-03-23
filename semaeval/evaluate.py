@@ -80,9 +80,9 @@ def detect_entities(articles, lang):
 			output = OrderedDict(article)
 
 			output["engine"] = engine_name
-			output["info"]="TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative, X: Ignored"
+			output["info"] = "TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative, X: Ignored"
 
-			for category in ["PERSON","GEO","ORG","KEYWORD"]:
+			for category in ["PERSON", "GEO", "ORG"]:
 				output[category] = {}
 
 				if category in categories:

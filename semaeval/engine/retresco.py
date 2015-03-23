@@ -2,6 +2,10 @@
 import requests
 import json
 
+# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+import os
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 label_retresco = {
 "geos": "GEO",
 "persons": "PERSON",
@@ -21,7 +25,7 @@ def extract_entities(text, lang):
 	entities={}
 	data={}
 	data["body"]=text
-	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=False)
+	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=os.path.join(__location__, "rtr_ipool.pem"))
 	result = rp.json()
 	categories = result["result"]["keywords"].items()
 	for category in categories:
