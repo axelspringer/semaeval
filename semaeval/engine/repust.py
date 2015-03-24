@@ -43,14 +43,18 @@ def convert_label(label):
 		print "repustate:",label
 		return label
 
+
 def extract_entities(text, lang):
 	entities = {}
-	client = repustate.Client(api_key='317542394cddce0baf6b3ec698d92198e2b6e4a7')
-    # see https://www.repustate.com/docs/
-	response = client.entities(text=text.encode("utf-8"), lang=lang)
+	try:
+		client = repustate.Client(api_key='317542394cddce0baf6b3ec698d92198e2b6e4a7')
+		# see https://www.repustate.com/docs/
+		response = client.entities(text=text.encode("utf-8"), lang=lang)
 
-	for k,v in response['entities'].items():
-		key = k
-		value = v
-		entities[key] = convert_label(value)
+		for k,v in response['entities'].items():
+			key = k
+			value = v
+			entities[key] = convert_label(value)
+	except repustate.RepustateAPIError, e:
+		print e
 	return entities

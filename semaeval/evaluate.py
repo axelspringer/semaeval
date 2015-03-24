@@ -18,9 +18,15 @@ import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
 import utils_yaml
 
+from multiprocessing import Pool
+from functools import partial
+import sys
+import time
+
 input_dir = "input/"
 store_dir = "output/"
 
+# needs 20 minutes with 50 documents
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
 # bitext: buggy (down with html error messages)
@@ -28,35 +34,58 @@ engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguas
 # linguasys: slow
 # temis: demo switched off
 
-engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
+# needs 5 minutes with 50 documents
+# engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
 
+def extract_entities(extract_function, text, lang):
+	print extract_function.__module__
+	return extract_function(text, lang)
+
+
 def collect_results(text, engines, lang, debug=False):
 	results = {}
-	pool = {}
+	total = {}
+	try:
+		p = Pool(len(engines))
+		partial_extract = partial(extract_entities, text=text, lang=lang)
+		all_entities = p.map(partial_extract, [engine.extract_entities for engine in engines])
+		# We need to terminate the pool manually
+		# Otherwise you get "IOError: [Errno 24] Too many open files"
+		# because nothing gets garbage collected
+		# https://stackoverflow.com/questions/9959598/multiprocessing-and-garbage-collection
+		p.terminate()
 
-	for engine in engines:
-		print engine.__name__
-		entities = engine.extract_entities(text, lang)
+		print all_entities
 
-		results[engine] = {}
-		for entity, category in entities.items():
-			if debug:
-				print category, entity
+		results = {k: v for k, v in zip(engines, all_entities)}
 
-			if category in results[engine]:
-				results[engine][category].add(entity)
-			else:
-				results[engine][category]=set([entity])
-					
-			if category in pool:
-				pool[category].update([entity])
-			else:
-				pool[category]=Counter([entity])
+		print results
 
-	return (pool,results)
+		for entities in all_entities:
+			results[engine] = {}
+			for entity, category in entities.items():
+				if debug:
+					print category, entity
+
+				if category in results[engine]:
+					results[engine][category].add(entity)
+				else:
+					results[engine][category]=set([entity])
+
+				if category in total:
+					total[category].update([entity])
+				else:
+					total[category]=Counter([entity])
+	# see https://stackoverflow.com/questions/11312525/catch-ctrlc-and-exit-multiprocesses-gracefully-in-python
+	except KeyboardInterrupt:
+		print "Caught KeyboardInterrupt, terminating workers"
+		# p.terminate()
+		sys.exit("Exiting script after catching KeyboardInterrupt.")
+
+	return total, results
 
 def detect_entities(articles, lang):
 	# see http://stackoverflow.com/questions/998938/handle-either-a-list-or-single-integer-as-an-argument
@@ -75,7 +104,7 @@ def detect_entities(articles, lang):
 		pool, results = collect_results(text, engines, lang)
 
 		for engine, categories in results.items():
-			engine_name = engine.__name__.split(".")[2]
+			engine_name = engine.__name__.split(".")[1]
 
 			output = OrderedDict(article)
 
@@ -149,11 +178,20 @@ def store_articles(articles, prefix):
 			utils_yaml.ordered_dump(article, out, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
 
 if __name__ == '__main__':
+
+	start = time.time()
+
+	input_dir = "../input/"
+	store_dir = "../output/"
+
 	articles = load_articles("en")
 
 	articles_enriched = detect_entities(articles, "en")
 
-	store_articles(articles_enriched, "en")
+	end = time.time()
+	print end - start
+
+	# store_articles(articles_enriched, "en")
 
 
 
