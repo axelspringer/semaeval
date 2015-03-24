@@ -58,12 +58,7 @@ def collect_results(text, engines, lang, debug=False):
 		# https://stackoverflow.com/questions/9959598/multiprocessing-and-garbage-collection
 		p.terminate()
 
-		print all_entities
-
 		results = {k: v for k, v in zip(engines, all_entities)}
-
-		print results
-
 		for entities in all_entities:
 			results[engine] = {}
 			for entity, category in entities.items():
