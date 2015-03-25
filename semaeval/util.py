@@ -12,17 +12,21 @@ folders = ["input/", "output/", "result/"]
 def clean_storage(lang, dryrun=False):
 
 	for folder in folders:
-		for the_file in os.listdir(folder):
-			file_path = os.path.join(folder, lang, the_file)
-			try:
-				print "Deleting:", file_path
+		folder_path = os.path.join(folder, lang)
+		try:
+			for the_file in os.listdir(folder_path):
+				file_path = os.path.join(folder_path, the_file)
 				if not dryrun:
+					print "Deleting:", file_path
 					if os.path.isfile(file_path):
 						os.unlink(file_path)
 					elif os.path.isdir(file_path):
 						shutil.rmtree(file_path)
-			except Exception, e:
-				print e
+					else:
+						print "Cannot delete unknown type of file."
+		except OSError as ose:
+			print ose
+
 
 
 if __name__ == "__main__":

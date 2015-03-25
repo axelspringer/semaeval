@@ -19,7 +19,7 @@ def precision(tp,tn,fp,fn):
 
 
 def recall(tp,tn,fp,fn):
-	return tp/float(tp + fn)	
+	return tp/float(tp + fn)
 
 
 def f1_score(precision, recall):
@@ -129,13 +129,13 @@ def collect_data(articles):
 					if key == "FP": fp += 1
 					if key == "FN": fn += 1
 			try:
-				prec = precision(tp,tn,fp,fn)
-				rec = recall(tp,tn,fp,fn)
+				prec = precision(tp, tn, fp, fn)
+				rec = recall(tp, tn, fp, fn)
 				f1 = f1_score(prec, rec)
 
 				statistics[engine][category].append((f1, prec, rec))
-			except ZeroDivisionError:
-				pass
+			except ZeroDivisionError as zde:
+				print engine, article["filename"], zde
 	return statistics
 
 

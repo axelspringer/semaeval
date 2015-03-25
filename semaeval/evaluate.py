@@ -19,6 +19,7 @@ import engine.meaningcloud as meaningcloud
 import utils_yaml
 
 from multiprocessing import Pool
+from multiprocessing import TimeoutError
 from functools import partial
 import sys
 import time
@@ -30,12 +31,12 @@ store_dir = "output/"
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
 # bitext: buggy (down with html error messages)
-# repustate: slow
-# linguasys: slow
+# repustate: slow and buggy (a lot of Internal Server Errors (maybe due to word black lists))
+# linguasys: extremely slow
 # temis: demo switched off
 
 # needs 5 minutes with 50 documents
-# engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
+engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
@@ -46,20 +47,26 @@ def extract_entities(extract_function, text, lang):
 
 
 def collect_results(text, engines, lang, debug=False):
+	print "Collecting results:"
 	results = {}
 	total = {}
+	partial_extract = partial(extract_entities, text=text, lang=lang)
 	try:
 		p = Pool(len(engines))
-		partial_extract = partial(extract_entities, text=text, lang=lang)
-		all_entities = p.map(partial_extract, [engine.extract_entities for engine in engines])
+		future = p.map_async(partial_extract, [engine.extract_entities for engine in engines])
+		# Wait for maximum of 30 seconds
+		all_entities = future.get(timeout=30)
 		# We need to terminate the pool manually
 		# Otherwise you get "IOError: [Errno 24] Too many open files"
 		# because nothing gets garbage collected
 		# https://stackoverflow.com/questions/9959598/multiprocessing-and-garbage-collection
 		p.terminate()
 
-		results = {k: v for k, v in zip(engines, all_entities)}
-		for entities in all_entities:
+		# all_entities = map(partial_extract, [engine.extract_entities for engine in engines])
+
+		entities_per_engine = {k: v for k, v in zip(engines, all_entities)}
+
+		for engine, entities in entities_per_engine.items():
 			results[engine] = {}
 			for entity, category in entities.items():
 				if debug:
@@ -79,6 +86,9 @@ def collect_results(text, engines, lang, debug=False):
 		print "Caught KeyboardInterrupt, terminating workers"
 		# p.terminate()
 		sys.exit("Exiting script after catching KeyboardInterrupt.")
+	except TimeoutError as e:
+		print "Timeout Error",e
+		print "Ignoring results for this document."
 
 	return total, results
 
@@ -92,14 +102,16 @@ def detect_entities(articles, lang):
 		text = article["text"]
 
 		if "url" in article:
-			print article["url"]
+			print "URL:", article["url"]
 		elif "filename" in article:
-			print article["filename"]
+			print "Filename:", article["filename"]
+		else:
+			print "No url and no filename available for the document."
 
 		pool, results = collect_results(text, engines, lang)
 
 		for engine, categories in results.items():
-			engine_name = engine.__name__.split(".")[1]
+			engine_name = engine.__name__.split(".")[2]
 
 			output = OrderedDict(article)
 

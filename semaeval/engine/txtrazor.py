@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from textrazor import TextRazor
+from textrazor import TextRazorAnalysisException
 
 client = TextRazor(api_key="18f6730269b89e61a2d9c89853960328aa5511226830cf32025ce43e", extractors=["entities", "topics"])
 
@@ -42,11 +43,15 @@ def convert_labels(labels):
 		print "textrazor:", labels
 		return labels[0]
 
-def extract_entities(text,lang):
-	entities={}
-	rp = client.analyze(text)
-	for entity in rp.entities():
-		key = entity.id
-		value = convert_labels(entity.dbpedia_types)
-		entities[key] = value
+def extract_entities(text, lang):
+	entities = {}
+	try:
+		rp = client.analyze(text)
+		for entity in rp.entities():
+			key = entity.id
+			value = convert_labels(entity.dbpedia_types)
+			entities[key] = value
+	except TextRazorAnalysisException as e:
+		print "TextRazor API:", e
+
 	return entities

@@ -45,7 +45,9 @@ if __name__ == '__main__':
 	# and https://stackoverflow.com/questions/1816958/cant-pickle-type-instancemethod-when-using-pythons-multiprocessing-pool-ma
 	# As a workaround we have to pass a function instead of a module or a class
 	# see https://stackoverflow.com/questions/7016567/picklingerror-when-using-multiprocessing
-	p.map(partial_run, [engine.extract_entities for engine in engines])
+	future = p.map_async(partial_run, [engine.extract_entities for engine in engines])
+
+	future.get(timeout=10)
 
 	end = time.time()
 	print end - start

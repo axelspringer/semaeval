@@ -34,7 +34,7 @@ def article_from_path(path):
 		if child.tag == "P":
 			if child.text and child.text.strip():
 				text = text + child.text.strip() + "\n"
-	url=""
+	url = None
 	url_tag = xml.find(".//FUS")
 	if url_tag is not None:
 		result = url_regex.search(url_tag.text)
@@ -43,8 +43,11 @@ def article_from_path(path):
 
 	basename = os.path.basename(path)
 	filename = basename.split(".")[0] + ".yml"
+	if url:
+		data = {"text": text, "date": iso, "url": url, "filename": filename }
+	else:
+		data = {"text": text, "date": iso, "filename": filename }
 
-	data = {"text": text, "date": iso, "url": url, "filename": filename }
 	return data
 
 def store_articles(articles, prefix):

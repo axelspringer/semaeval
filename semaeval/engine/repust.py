@@ -56,5 +56,5 @@ def extract_entities(text, lang):
 			value = v
 			entities[key] = convert_label(value)
 	except repustate.RepustateAPIError, e:
-		print e
-	return entities
+		print "Repustate API Error:", e, "No entities extracted!"
+		return entities
