@@ -7,17 +7,21 @@ label_bitext = {19: "NUMBER", 15: "CURRENCY", 10: "DATE", 8: "URL", 7: "ORG", 6:
 # conversion from ISO_639-1 to bitext language codes (see page 50 of http://www.bitext.com/btxt_docs/Bitext_API-Reference-Manual_EN.pdf)
 lang_bitext = {"en": "ENG", "de": "DEU", "es": "ESP", "pt": "POR", "it": "ITA", "fr": "FRA", "nl": "NLD","ca": "CAT"}
 
+
 def convert_label(label):
 	if label in label_bitext:
 		return label_bitext[label]
 	else:
 		print "bitext:",label
 		return label
+
+
 def convert_lang(lang):
 	if lang in lang_bitext:
 		return lang_bitext[lang]
 	else:
 		return lang
+
 
 def extract_entities(text, lang):
 	entities={}
@@ -34,5 +38,6 @@ def extract_entities(text, lang):
 			value = convert_label(entity["type"])
 			entities[key] = value
 	except ValueError, e:
-		print "Bitext Error:", e
+		print "Bitext API Error:", e
+		print "Bitext Response:", rp.content
 	return entities

@@ -15,6 +15,7 @@ label_linguasys = {
 # conversion from ISO_639-1 to linguasys language codes (see https://nlp.linguasys.com/Languages)
 lang_linguasys = {"en": "ENG"}
 
+
 def convert_label(label):
 	prefix="/".join(label.split("/")[:3])
 	if prefix in label_linguasys:
@@ -23,20 +24,28 @@ def convert_label(label):
 		print "linguasys:",label
 		return label
 
+
 def convert_lang(lang):
 	if lang in lang_linguasys:
 		return lang_linguasys[lang]
 	else:
 		return lang
 
-def extract_entities(text,lang):
-	entities={}
+
+def extract_entities(text, lang):
+	text = text[:12000]   # Linguasys has a limit (officially of 16kB, I found 12000 chars) when using a GET request (TODO: switch to POST)
+	entities = {}
 	language = convert_lang(lang).upper()
 	payload = {'subscription-key': 'a0fa546f85ca4bbfb55bab69aa2c5a4f', 'languageModelCode': language, 'bodyText': text}
 	rp = requests.get('https://api.linguasys.com/storymapper/analyze', params=payload)
-	xml = ElementTree.fromstring(rp.content)
-	for tag in xml.findall(".//entity"):
-		key = unicode(tag.attrib["fullName"])
-		value = convert_label(tag.attrib["type"])
-		entities[key] = value
+
+	try:
+		xml = ElementTree.fromstring(rp.content)
+		for tag in xml.findall(".//entity"):
+			key = unicode(tag.attrib["fullName"])
+			value = convert_label(tag.attrib["type"])
+			entities[key] = value
+	except ElementTree.ParseError as pe:
+		print "Linguasys API Error:", pe
+		print "Linguasys Response:", rp.content
 	return entities

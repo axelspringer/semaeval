@@ -14,6 +14,7 @@ label_retresco = {
 "keywords": "KEYWORD",
 "events":" EVENT"}
 
+
 def convert_label(label):
 	if label in label_retresco:
 		return label_retresco[label]
@@ -21,10 +22,10 @@ def convert_label(label):
 		print "retresco:",label
 		return label
 
+
 def extract_entities(text, lang):
-	entities={}
-	data={}
-	data["body"]=text
+	entities = {}
+	data = {"body": text}
 	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=os.path.join(__location__, "rtr_ipool.pem"))
 	result = rp.json()
 	categories = result["result"]["keywords"].items()

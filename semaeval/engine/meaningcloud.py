@@ -3,10 +3,11 @@ import requests
 import json
 
 label_meaningcloud = {
-"Top>Location":"GEO", 
-"Top>Person":"PERSON",
-"Top>Organization":"ORG", 
-"Top":"KEYWORD"}
+"Top>Location": "GEO",
+"Top>Person": "PERSON",
+"Top>Organization": "ORG",
+"Top": "KEYWORD"}
+
 
 def convert_label(label):
 	prefix=">".join(label.split(">")[:2])
@@ -16,8 +17,9 @@ def convert_label(label):
 		print "meaningcloud:",label
 		return label
 
+
 def extract_entities(text, lang):
-	entities={}
+	entities = {}
 	
 	headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
 	# see https://www.meaningcloud.com/developer/topics-extraction/doc/1.2/request

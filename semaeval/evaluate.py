@@ -27,16 +27,13 @@ import time
 input_dir = "input/"
 store_dir = "output/"
 
-# needs 20 minutes with 50 documents
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
 
-# bitext: buggy (down with html error messages)
 # repustate: slow and buggy (a lot of Internal Server Errors (maybe due to word black lists))
-# linguasys: extremely slow
+# linguasys: extremely slow , quota expired
 # temis: demo switched off
 
-# needs 5 minutes with 50 documents
-engines = [meaningcloud, textrazor, semantria, alchemy, retresco, simple]
+engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
@@ -55,7 +52,7 @@ def collect_results(text, engines, lang, debug=False):
 		p = Pool(len(engines))
 		future = p.map_async(partial_extract, [engine.extract_entities for engine in engines])
 		# Wait for maximum of 30 seconds
-		all_entities = future.get(timeout=30)
+		all_entities = future.get(timeout=60)
 		# We need to terminate the pool manually
 		# Otherwise you get "IOError: [Errno 24] Too many open files"
 		# because nothing gets garbage collected

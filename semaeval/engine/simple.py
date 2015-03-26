@@ -2,12 +2,13 @@
 import nltk
 
 label_nltk = {
-	"GPE":"GEO",
-	"LOCATION":"GEO",
-	"ORGANIZATION":"ORG",
-	"PERSON":"PERSON",
-	"FACILITY":"KEYWORD",
-	"GSP":"ORG"}
+	"GPE": "GEO",
+	"LOCATION": "GEO",
+	"ORGANIZATION": "ORG",
+	"PERSON": "PERSON",
+	"FACILITY": "KEYWORD",
+	"GSP": "ORG"}
+
 
 def convert_label(label):
 	if label in label_nltk:
@@ -15,6 +16,7 @@ def convert_label(label):
 	else:
 		print "simple:",label
 		return label
+
 
 # see http://timmcnamara.co.nz/post/2650550090/extracting-names-with-6-lines-of-python-code
 def extract_entities(text, lang):

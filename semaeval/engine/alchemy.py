@@ -25,12 +25,14 @@ label_alchemy = {
 "Holiday":"EVENT"
 }
 
+
 def convert_label(label):
 	if label in label_alchemy:
 		return label_alchemy[label]
 	else:
-		print "alchemy:",label
+		print "alchemy:", label
 		return label
+
 
 def extract_entities(text, lang):
 	entities = {}

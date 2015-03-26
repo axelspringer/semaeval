@@ -10,6 +10,7 @@ label_temis = {
 "/Entity/Media" : "ORG", 
 "/Entity/Function": "FUNCTION"}
 
+
 def convert_label(label):
 	prefix="/".join(label.split("/")[:3])
 	if prefix in label_temis:
@@ -18,8 +19,9 @@ def convert_label(label):
 		print "temis",label
 		return label
 
+
 def extract_entities(text, lang):
-	entities={}
+	entities = {}
 	headers = {"content-type": "text/plain; charset=UTF-8", "accept-language": lang}
 	rp = requests.post('http://193.28.233.173:8091/temis/v1/annotation/annotate/AS-test.xml?container=none', headers=headers, data=text.encode("utf-8"))
 	xml = ElementTree.fromstring(rp.content)

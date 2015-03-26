@@ -36,6 +36,7 @@ label_repustate = {
 "automotive.company": "ORG",
 "music.album": "PRODUCT"}
 
+
 def convert_label(label):
 	if label in label_repustate:
 		return label_repustate[label]
@@ -57,4 +58,5 @@ def extract_entities(text, lang):
 			entities[key] = convert_label(value)
 	except repustate.RepustateAPIError, e:
 		print "Repustate API Error:", e, "No entities extracted!"
-		return entities
+
+	return entities

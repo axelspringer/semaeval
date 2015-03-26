@@ -35,6 +35,7 @@ lang_semantria = {
 "zh": "2fc65284-5743-4ff4-b239-331ac9b03a7a",
 }
 
+
 def convert_label(label):
 	if label in label_semantria:
 		return label_semantria[label]
@@ -42,11 +43,13 @@ def convert_label(label):
 		print "semantria:",label
 		return label
 
+
 def convert_lang(lang):
 	if lang in lang_semantria:
 		return lang_semantria[lang]
 	else:
 		return lang
+
 
 def extract_entities(text, lang):
 	text = text[:8191]   # Semantria seems to have a limit of 8192 chars per document (at least with the demo key)
