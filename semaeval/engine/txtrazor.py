@@ -22,6 +22,7 @@ label_textrazor = {
 "Automobile": "PRODUCT",
 "Ship": "PRODUCT",
 "Aircraft": "PRODUCT",
+"SpaceStation": "PRODUCT",
 "Event": "EVENT",
 "Sport": "KEYWORD",
 "Holiday": "EVENT",

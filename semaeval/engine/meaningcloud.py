@@ -6,7 +6,12 @@ label_meaningcloud = {
 "Top>Location": "GEO",
 "Top>Person": "PERSON",
 "Top>Organization": "ORG",
-"Top": "KEYWORD"}
+"Top>Product": "PRODUCT",
+"Top>Event": "EVENT",
+"Top>OtherEntity": "KEYWORD",
+"Top>Timex": "DATE",
+"Top": "KEYWORD",
+}
 
 
 def convert_label(label):

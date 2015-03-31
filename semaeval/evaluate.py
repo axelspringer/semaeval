@@ -10,6 +10,7 @@ import engine.simple as simple
 import engine.temis as temis
 import engine.retresco as retresco
 import engine.basistech as basistech
+import engine.netowl as netowl
 import engine.alchemy as alchemy
 import engine.repust as repustate
 import engine.linguasys as linguasys
@@ -28,13 +29,13 @@ import time
 input_dir = "input/"
 store_dir = "output/"
 
-engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, simple]
+engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, netowl, simple]
 
 # repustate: slow and buggy (a lot of Internal Server Errors (maybe due to word black lists))
 # linguasys: extremely slow , quota expired
 # temis: demo switched off
 
-engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, basistech, simple]
+engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, basistech, netowl, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
