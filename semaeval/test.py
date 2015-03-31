@@ -3,6 +3,7 @@
 from engine import simple
 import engine.temis as temis
 import engine.retresco as retresco
+import engine.basistech as basistech
 import engine.alchemy as alchemy
 import engine.repust as repustate
 import engine.linguasys as linguasys
@@ -17,8 +18,9 @@ from functools import partial
 import time
 
 test_text = u"Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
-engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, simple]
+engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, simple]
 
+engines = [retresco, basistech, simple]
 
 # extract_function must be the first argument, because we will vary it with pool.map
 # see also https://stackoverflow.com/questions/24755463/functools-partial-wants-to-use-a-positional-argument-as-a-keyword-argument
