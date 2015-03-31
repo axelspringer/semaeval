@@ -17,7 +17,8 @@ label_semantria = {
 "Company":"ORG",
 "Job Title":"FUNCTION",
 "Quote":"QUOTE",
-"Pattern":"KEYWORD"}
+"Pattern":"KEYWORD",
+"vehicle":"PRODUCT"}
 
 # in semantria the configuration is stored on the server and has an id
 # You can get the config id for a language via

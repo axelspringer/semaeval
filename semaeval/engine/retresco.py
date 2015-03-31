@@ -27,11 +27,15 @@ def extract_entities(text, lang):
 	entities = {}
 	data = {"body": text}
 	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=os.path.join(__location__, "rtr_ipool.pem"))
-	result = rp.json()
-	categories = result["result"]["keywords"].items()
-	for category in categories:
-		value = category[0]
-		for element in category[1]:
-			key = element["lemma"]
-			entities[key] = convert_label(value)
+	try:
+		result = rp.json()
+		categories = result["result"]["keywords"].items()
+		for category in categories:
+			value = category[0]
+			for element in category[1]:
+				key = element["lemma"]
+				entities[key] = convert_label(value)
+	except ValueError as e:
+		print "Retresco API:", e
+		print "Retresco API response:", rp.content
 	return entities			

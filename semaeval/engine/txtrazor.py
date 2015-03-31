@@ -20,7 +20,8 @@ label_textrazor = {
 "Currency": "CURRENCY",
 "URL": "URL",
 "Automobile": "PRODUCT",
-"Ship":"PRODUCT",
+"Ship": "PRODUCT",
+"Aircraft": "PRODUCT",
 "Event": "EVENT",
 "Sport": "KEYWORD",
 "Holiday": "EVENT",
@@ -30,7 +31,9 @@ label_textrazor = {
 "Food": "PRODUCT",
 "TopicalConcept": "KEYWORD",
 "TimePeriod": "DATE",
-"Biomolecule": "KEYWORD"
+"Biomolecule": "KEYWORD",
+"Date": "DATE",
+"Flag": "KEYWORD"
 }
 
 def convert_labels(labels):

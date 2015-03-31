@@ -20,8 +20,6 @@ import time
 test_text = u"Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, simple]
 
-engines = [retresco, basistech, simple]
-
 # extract_function must be the first argument, because we will vary it with pool.map
 # see also https://stackoverflow.com/questions/24755463/functools-partial-wants-to-use-a-positional-argument-as-a-keyword-argument
 def run(extract_function, text, lang):

@@ -2,27 +2,31 @@
 
 from alchemyapi import AlchemyAPI
 
+# see http://www.alchemyapi.com/api/entity/types
 label_alchemy = {
-"City":"GEO", 
-"Facility":"GEO",
-"StateOrCounty":"GEO",
-"Country":"GEO",
-"Region":"GEO",
-"Continent":"GEO", 
-"Person":"PERSON",
-"Company":"ORG",
-"Organization":"ORG",
-"PrintMedia":"ORG",
-"JobTitle":"FUNCTION",
-"Quantity":"NUMBER",
-"SportingEvent":"EVENT",
-"Drug":"KEYWORD",
-"HealthCondition":"KEYWORD",
-"FieldTerminology":"KEYWORD",
-"Sport":"KEYWORD",
-"Technology":"KEYWORD",
-"EntertainmentAward":"KEYWORD",
-"Holiday":"EVENT"
+"City": "GEO",
+"Facility": "GEO",
+"StateOrCounty": "GEO",
+"Country": "GEO",
+"Region": "GEO",
+"Continent": "GEO",
+"GeographicFeature": "GEO",
+"Person": "PERSON",
+"Company": "ORG",
+"Organization": "ORG",
+"PrintMedia": "ORG",
+"JobTitle": "FUNCTION",
+"Quantity": "NUMBER",
+"SportingEvent": "EVENT",
+"Drug": "KEYWORD",
+"HealthCondition": "KEYWORD",
+"FieldTerminology": "KEYWORD",
+"Sport": "KEYWORD",
+"Technology": "KEYWORD",
+"EntertainmentAward": "KEYWORD",
+"Holiday": "EVENT",
+"TelevisionStation": "ORG",
+"Crime": "KEYWORD"
 }
 
 

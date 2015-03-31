@@ -34,7 +34,7 @@ engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguas
 # linguasys: extremely slow , quota expired
 # temis: demo switched off
 
-engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, simple]
+engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, basistech, simple]
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
@@ -109,7 +109,10 @@ def detect_entities(articles, lang):
 		pool, results = collect_results(text, engines, lang)
 
 		for engine, categories in results.items():
-			engine_name = engine.__name__.split(".")[2]
+			try:
+				engine_name = engine.__name__.split(".")[2]
+			except IndexError:
+				engine_name = engine.__name__.split(".")[1]
 
 			output = OrderedDict(article)
 
