@@ -3,6 +3,11 @@
 import os
 from collections import OrderedDict
 from collections import Counter
+from multiprocessing import Pool
+from multiprocessing import TimeoutError
+from functools import partial
+import sys
+import time
 
 import yaml
 
@@ -18,13 +23,8 @@ import engine.semant as semantria
 import engine.txtrazor as textrazor
 import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
-import utils_yaml
+import utils
 
-from multiprocessing import Pool
-from multiprocessing import TimeoutError
-from functools import partial
-import sys
-import time
 
 input_dir = "input/"
 store_dir = "output/"
@@ -184,7 +184,7 @@ def store_articles(articles, prefix):
 
 		with open(path, "w") as out:
 			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-			utils_yaml.ordered_dump(article, out, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+			utils.ordered_dump(article, out, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
 
 if __name__ == '__main__':
 

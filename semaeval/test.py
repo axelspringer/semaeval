@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from multiprocessing import Pool
+from functools import partial
+import time
+
 from engine import simple
 import engine.temis as temis
 import engine.retresco as retresco
@@ -13,10 +17,6 @@ import engine.txtrazor as textrazor
 import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
 
-from multiprocessing import Pool
-from functools import partial
-
-import time
 
 test_text = u"Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
 engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, netowl, simple]

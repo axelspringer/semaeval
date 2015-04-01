@@ -12,7 +12,7 @@ import requests
 import dateutil.parser
 import yaml
 
-from semaeval.source import storage
+from semaeval import utils as storage
 
 
 store_dir = "input/"
@@ -99,6 +99,7 @@ def load_articles(prefix):
 				articles.append(data)
 	return articles
 
+# start with "python -m semaeval.source.welt semaeval/source/welt.py"
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Download article text from welt.de url.')
 	parser.add_argument("url", metavar="URL", type=str, nargs="?", help="The url to download text from.")

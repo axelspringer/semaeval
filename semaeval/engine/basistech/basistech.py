@@ -1,28 +1,22 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
+import yaml
 
-label_basistech = {
-"PERSON": "PERSON",
-"LOCATION": "GEO",
-"TITLE": "FUNCTION",
-"TEMPORAL:DATE": "DATE",
-"ORGANIZATION": "ORG",
-"IDENTIFIER:URL": "URL",
-"TEMPORAL:TIME": "DATE",
-"IDENTIFIER:DISTANCE": "NUMBER",
-"IDENTIFIER:MONEY": "CURRENCY",
-"RELIGION": "KEYWORD",
-"NATIONALITY": "KEYWORD",
-"PRODUCT": "PRODUCT"
-}
+# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+import os
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+
+host = config["host"]
+labels = config["labels"]
 
 
 def convert_label(label):
-	if label in label_basistech:
-		return label_basistech[label]
+	if label in labels:
+		return labels[label]
 	else:
-		print "basistech:",label
+		print "basistech:", label
 		return label
 
 
@@ -34,7 +28,7 @@ def extract_entities(text, lang):
 	data = {'text': text,
 			'languageDetection': {"language": "UNKNOWN","strategy": "SINGLE"},
 			'resultTypes': ["DEFAULT_NAMED_ENTITY"]}
-	rp = requests.post('http://192.168.59.103:9020/rws/services/doc/processText', headers=headers, data=json.dumps(data))
+	rp = requests.post(host + "/rws/services/doc/processText", headers=headers, data=json.dumps(data))
 	try:
 		result = rp.json()
 

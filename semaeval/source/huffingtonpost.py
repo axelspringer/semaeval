@@ -8,7 +8,7 @@ import feedparser
 from boilerpipe.extract import Extractor
 import yaml
 
-from semaeval import utils_yaml
+from semaeval import utils
 
 
 french_dir = "input/fr/"
@@ -48,4 +48,4 @@ if __name__ == '__main__':
 
 		with open(french_dir + filename + ".yml", "w") as f:
 			# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-			utils_yaml.ordered_dump(article, f, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)
+			utils.ordered_dump(article, f, Dumper=yaml.SafeDumper, default_flow_style=False, width=100, encoding="utf-8", allow_unicode=True)

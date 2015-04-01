@@ -9,7 +9,7 @@ from itertools import groupby
 import yaml
 import matplotlib.pyplot as pyplot
 
-import utils_yaml
+import utils
 
 result_dir = "output/"
 
@@ -181,7 +181,7 @@ def load_articles(prefix):
 	for filename in os.listdir(dir):
 		if filename.endswith(".yml"):
 			with open(dir + filename,"r") as f:
-				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
+				data = utils.ordered_load(f, yaml.SafeLoader)
 				articles.append(data)
 	return articles
 
@@ -191,14 +191,14 @@ def store_results(results, lang):
 	print "Storing file: ", path
 	with open(path, "w") as out:
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-		utils_yaml.ordered_dump(results, out, Dumper=yaml.SafeDumper, width=200, encoding="utf-8", allow_unicode=True)
+		utils.ordered_dump(results, out, Dumper=yaml.SafeDumper, width=200, encoding="utf-8", allow_unicode=True)
 
 
 def load_results(lang):
 	path = lang + "_"+ "results.yml"
 	with open(path, "r") as infile:
 		# see http://stackoverflow.com/questions/20352794/pyyaml-is-producing-undesired-python-unicode-output
-		return utils_yaml.ordered_load(infile, yaml.SafeLoader)
+		return utils.ordered_load(infile, yaml.SafeLoader)
 
 
 if __name__ == '__main__':
