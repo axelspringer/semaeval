@@ -10,7 +10,7 @@ import engine.retresco as retresco
 import engine.basistech as basistech
 import engine.netowl as netowl
 import engine.alchemy as alchemy
-import engine.repust as repustate
+import engine.repustate as repustate
 import engine.linguasys as linguasys
 import engine.semant as semantria
 import engine.txtrazor as textrazor
