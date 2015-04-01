@@ -159,7 +159,7 @@ def load_articles(prefix):
 	for filename in os.listdir(dir):
 		if filename.endswith(".yml"):
 			with open(dir + filename,"r") as f:
-				data = utils_yaml.ordered_load(f, yaml.SafeLoader)
+				data = utils.ordered_load(f, yaml.SafeLoader)
 				articles.append(data)
 	return articles
 
