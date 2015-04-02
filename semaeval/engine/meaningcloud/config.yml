@@ -1,0 +1,10 @@
+key: dbc8c605163c8e789c2faaa9ce05fbde
+labels:
+  "Top>Location": "GEO"
+  "Top>Person": "PERSON"
+  "Top>Organization": "ORG"
+  "Top>Product": "PRODUCT"
+  "Top>Event": "EVENT"
+  "Top>OtherEntity": "KEYWORD"
+  "Top>Timex": "DATE"
+  "Top": "KEYWORD"
