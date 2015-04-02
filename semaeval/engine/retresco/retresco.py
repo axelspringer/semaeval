@@ -3,21 +3,20 @@ import requests
 import json
 
 # see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+import yaml
 import os
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
 
-label_retresco = {
-"geos": "GEO",
-"persons": "PERSON",
-"orgs": "ORG",
-"products": "PRODUCT",
-"keywords": "KEYWORD",
-"events":" EVENT"}
+key = config["key"]
+host = config["host"]
+server_cert = config["server_cert"]
+labels = config["labels"]
 
 
 def convert_label(label):
-	if label in label_retresco:
-		return label_retresco[label]
+	if label in labels:
+		return labels[label]
 	else:
 		print "retresco:",label
 		return label
@@ -26,15 +25,15 @@ def convert_label(label):
 def extract_entities(text, lang):
 	entities = {}
 	data = {"body": text}
-	rp = requests.post('https://rtr.ipool.asideas.de/enrich?userkey=1A5319EA-4AA0-48D8-8010-7952863851D0', data=json.dumps(data), verify=os.path.join(__location__, "rtr_ipool.pem"))
+	rp = requests.post(host + '/enrich?userkey=' + key, data=json.dumps(data), verify=os.path.join(__location__, server_cert))
 	try:
 		result = rp.json()
 		categories = result["result"]["keywords"].items()
 		for category in categories:
 			value = category[0]
 			for element in category[1]:
-				key = element["lemma"]
-				entities[key] = convert_label(value)
+				k = element["lemma"]
+				entities[k] = convert_label(value)
 	except ValueError as e:
 		print "Retresco API:", e
 		print "Retresco API response:", rp.content

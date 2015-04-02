@@ -1,0 +1,10 @@
+key: 1A5319EA-4AA0-48D8-8010-7952863851D0
+host: "https://rtr.ipool.asideas.de"
+server_cert: "rtr_ipool.pem"
+labels:
+  "geos": "GEO"
+  "persons": "PERSON"
+  "orgs": "ORG"
+  "products": "PRODUCT"
+  "keywords": "KEYWORD"
+  "events": "EVENT"
