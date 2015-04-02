@@ -1,0 +1,13 @@
+key: a09820f5-4f82-4c26-a5a9-1724e985a776
+labels:
+  "entity:person": "PERSON"
+  "entity:place": "GEO"
+  "entity:organization": "ORG"
+  "entity:time": "DATE"
+  "entity:other": "KEYWORD"
+  "entity:numeric": "NUMBER"
+  "entity:address": "URL"
+  "entity:artifact": "PRODUCT"
+langs:
+  "en": "nametag-english-sentiment-analysis-ignoresgml-json"
+  "fr": "nametag-french-ignoresgml-json"
