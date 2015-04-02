@@ -8,8 +8,9 @@ import argparse
 
 import yaml
 from collections import OrderedDict
+import config
 
-folders = ["input/", "output/"]
+folders = [config.folder_in, config.folder_out]
 
 
 # see http://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
@@ -65,7 +66,7 @@ if __name__ == "__main__":
 	parser.add_argument("--no-dry-run", action="store_true", help="Delete files for real")
 
 	args = parser.parse_args()
-	folders = ["../input/","../output/","../result/"]
+	folders = ["../input/","../output/"]
 
 	if args.no_dry_run:
 		print "Deleting files for real."

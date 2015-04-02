@@ -24,18 +24,24 @@ import engine.txtrazor as textrazor
 import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
 import utils
+import config
 
 
-input_dir = "input/"
-store_dir = "output/"
+input_dir = config.folder_in
+store_dir = config.folder_out
 
-engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, netowl, simple]
+categories_analysed = config.categories
+
+# see http://stackoverflow.com/questions/14094802/construct-a-callable-object-from-a-string-representing-its-name-in-python
+engines = [globals()[engine] for engine in config.engines]
 
 # repustate: slow and buggy (a lot of Internal Server Errors (maybe due to word black lists))
 # linguasys: extremely slow , quota expired
 # temis: demo switched off
 
-engines = [meaningcloud, bitext, textrazor, semantria, alchemy, retresco, basistech, netowl, simple]
+engines.remove(repustate)
+engines.remove(linguasys)
+engines.remove(temis)
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
@@ -120,7 +126,7 @@ def detect_entities(articles, lang):
 			output["engine"] = engine_name
 			output["info"] = "TP: True Positive, TN: True Negative, FP: False Positive, FN: False Negative, X: Ignored"
 
-			for category in ["PERSON", "GEO", "ORG"]:
+			for category in categories_analysed:
 				output[category] = {}
 
 				if category in categories:
@@ -154,7 +160,7 @@ def detect_entities(articles, lang):
 
 def load_articles(prefix):
 	articles = []
-	dir = input_dir + prefix + "/"
+	dir = input_dir + "/" + prefix + "/"
 
 	for filename in os.listdir(dir):
 		if filename.endswith(".yml"):
@@ -164,7 +170,7 @@ def load_articles(prefix):
 	return articles
 
 def store_articles(articles, prefix):
-	dir = store_dir + prefix + "/"
+	dir = store_dir + "/" + prefix + "/"
 	# create the directory if it does not yet exist
 	# see http://stackoverflow.com/questions/273192/in-python-check-if-a-directory-exists-and-create-it-if-necessary
 	try:
@@ -189,9 +195,6 @@ def store_articles(articles, prefix):
 if __name__ == '__main__':
 
 	start = time.time()
-
-	input_dir = "../input/"
-	store_dir = "../output/"
 
 	articles = load_articles("en")
 

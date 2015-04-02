@@ -9,9 +9,11 @@ from itertools import groupby
 import yaml
 import matplotlib.pyplot as pyplot
 
+import config
 import utils
 
-result_dir = "output/"
+result_dir = config.folder_out
+categories_analysed = config.categories
 
 
 def precision(tp,tn,fp,fn):
@@ -44,7 +46,7 @@ def sstddev(l):
 def plot_results(data):
 	pyplot.style.use('ggplot')
 	pyplot.rcParams['figure.figsize'] = 14.0, 10.0
-	for number, category in enumerate(["PERSON", "GEO", "ORG", "TOTAL"]):
+	for number, category in enumerate(categories_analysed + ["TOTAL"]):
 		index = 0
 		labels = []
 		data_x1 = []
@@ -112,7 +114,7 @@ def collect_data(articles):
 		if engine not in statistics:
 			statistics[engine] = {}
 
-		for category in ["PERSON", "GEO", "ORG"]:
+		for category in categories_analysed:
 
 			if category not in statistics[engine]:
 				statistics[engine][category] = []
@@ -176,11 +178,11 @@ def compute_total(results):
 
 def load_articles(prefix):
 	articles = []
-	dir = result_dir + prefix + "/"
+	folder = result_dir + "/"+ prefix + "/"
 
-	for filename in os.listdir(dir):
+	for filename in os.listdir(folder):
 		if filename.endswith(".yml"):
-			with open(dir + filename,"r") as f:
+			with open(folder + filename,"r") as f:
 				data = utils.ordered_load(f, yaml.SafeLoader)
 				articles.append(data)
 	return articles
@@ -203,7 +205,7 @@ def load_results(lang):
 
 if __name__ == '__main__':
 
-	result_dir = "../output/"
+	result_dir = "../output"
 	parser = argparse.ArgumentParser(description='Compute statistics from enriched articles and plot results comparing the semantic engines.')
 	parser.add_argument("-l","--lang", type=str, help="Language of the text (two-letter code: en, de, fr, ...)", required=True)
 

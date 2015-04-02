@@ -1,0 +1,21 @@
+folder_input: "input"
+folder_output: "output"
+engines:
+  - meaningcloud
+  - bitext
+  - textrazor
+  - temis
+  - semantria
+  - repustate
+  - linguasys
+  - alchemy
+  - retresco
+  - basistech
+  - netowl
+  - simple
+# categories can be one of these:
+# PERSON, GEO, ORG, PRODUCT, EVENT, KEYWORD, FUNCTION, NUMBER, DATE, CURRENCY, URL, QUOTE
+categories:
+  - PERSON
+  - GEO
+  - ORG

@@ -16,10 +16,12 @@ import engine.semant as semantria
 import engine.txtrazor as textrazor
 import engine.bitext as bitext
 import engine.meaningcloud as meaningcloud
+import config
 
 
 test_text = u"Let's try to talk with Angela Merkel at the Brandenburger Tor in Berlin: 'äh, öh, üh, ßß'."
-engines = [meaningcloud, bitext, textrazor, temis, semantria, repustate, linguasys, alchemy, retresco, basistech, netowl, simple]
+# see http://stackoverflow.com/questions/14094802/construct-a-callable-object-from-a-string-representing-its-name-in-python
+engines = [globals()[engine] for engine in config.engines]
 
 # extract_function must be the first argument, because we will vary it with pool.map
 # see also https://stackoverflow.com/questions/24755463/functools-partial-wants-to-use-a-positional-argument-as-a-keyword-argument
