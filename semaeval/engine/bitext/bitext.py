@@ -1,24 +1,28 @@
 # -*- coding: utf-8 -*-
 import requests
-import json
 
-# see http://www.bitext.com/btxt_docs/Bitext_API-Reference-Manual_EN.pdf, page 33
-label_bitext = {19: "NUMBER", 15: "CURRENCY", 11: "DATE", 10: "DATE", 8: "URL", 7: "ORG", 6: "ORG", 3: "GEO", 1: "PERSON", 0: "KEYWORD"}
-# conversion from ISO_639-1 to bitext language codes (see page 50 of http://www.bitext.com/btxt_docs/Bitext_API-Reference-Manual_EN.pdf)
-lang_bitext = {"en": "ENG", "de": "DEU", "es": "ESP", "pt": "POR", "it": "ITA", "fr": "FRA", "nl": "NLD","ca": "CAT"}
+# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+import yaml
+import os
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
 
+user = config["user"]
+passwd = config["passwd"]
+labels = config["labels"]
+langs = config["langs"]
 
 def convert_label(label):
-	if label in label_bitext:
-		return label_bitext[label]
+	if label in labels:
+		return labels[label]
 	else:
 		print "bitext:",label
 		return label
 
 
 def convert_lang(lang):
-	if lang in lang_bitext:
-		return lang_bitext[lang]
+	if lang in langs:
+		return langs[lang]
 	else:
 		return lang
 
@@ -29,7 +33,7 @@ def extract_entities(text, lang):
 	# see also http://www.bitext.com/btxt_docs/API_Code/Bitext_API_Client_Python.txt
 	headers = {"Content-type": "application/x-www-form-urlencoded"}
 	# ID must be a number not a string. Otherwise the returned JSON is invalid. Bug in the example above or in the API?
-	data = {'User': 'amaier1', 'Pass': 'Qp76dY1DQ', 'Lang': language, 'ID': 0001, 'Text': text, 'Detail': 'Detailed', 'OutFormat':'JSON', 'Normalized': 'No', 'Theme': 'Gen'}
+	data = {'User': user, 'Pass': passwd, 'Lang': language, 'ID': 0001, 'Text': text, 'Detail': 'Detailed', 'OutFormat':'JSON', 'Normalized': 'No', 'Theme': 'Gen'}
 	rp = requests.post("http://svc8.bitext.com/WS_Nops_Ent/Service.aspx", data=data, headers=headers)
 	try:
 		result = rp.json()
