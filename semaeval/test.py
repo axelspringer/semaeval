@@ -4,7 +4,7 @@ from multiprocessing import Pool
 from functools import partial
 import time
 
-from engine import simple
+import engine.simple as simple
 import engine.temis as temis
 import engine.retresco as retresco
 import engine.basistech as basistech
