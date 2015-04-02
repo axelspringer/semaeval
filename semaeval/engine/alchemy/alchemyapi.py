@@ -34,6 +34,7 @@ except ImportError:
     import simplejson as json
 
 # see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+import yaml
 import os
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -145,8 +146,8 @@ class AlchemyAPI:
         import sys
         try:
             # Open the key file and read the key
-            f = open(os.path.join(__location__, "api_key.txt"), "r")
-            key = f.read().strip()
+            f = open(os.path.join(__location__, "config.yml"), "r")
+            key = yaml.load(f)["key"]
 
             if key == '':
                 # The key file should't be blank
