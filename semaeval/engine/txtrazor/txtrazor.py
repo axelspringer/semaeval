@@ -18,15 +18,14 @@ def convert_labels(label_list):
 	for label in label_list:
 		if label in labels:
 			return labels[label]
-	if not labels:
+	if not label_list:
 		return "KEYWORD"
 	else:
-		print "textrazor:", labels
-		return labels[0]
+		print "textrazor:", label_list
+		return label_list[0]
 
 
 def extract_entities(text, lang):
-	print "txtrazor extract_entities"
 	entities = {}
 	try:
 		rp = client.analyze(text)

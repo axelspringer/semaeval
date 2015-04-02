@@ -9,7 +9,7 @@ import argparse
 import yaml
 from collections import OrderedDict
 
-folders = ["input/", "output/", "result/"]
+folders = ["input/", "output/"]
 
 
 # see http://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
