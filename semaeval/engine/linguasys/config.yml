@@ -1,0 +1,13 @@
+key: a0fa546f85ca4bbfb55bab69aa2c5a4f
+labels:
+  "person" : "PERSON"
+  "location": "GEO"
+  "organisation": "ORG"
+  "administrative unit": "ORG"
+  "date" : "DATE"
+  "time" : "DATE"
+  "aspect" : "KEYWORD"
+  "abbreviation" : "KEYWORD"
+# conversion from ISO_639-1 to linguasys language codes (see https://nlp.linguasys.com/Languages)
+langs:
+  "en": "ENG"
