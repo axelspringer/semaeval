@@ -9,7 +9,7 @@ into this directory. Then you can do
     $ boot2docker start  # only on Mac OS X
     $ docker build -t basistech .
     $ docker run --name basistech_instance -p 9020:9020 -i -t basistech
-    $ $ boot2docker ip    # only on Mac OS X, on Linux you can use 127.0.0.1
+    $ boot2docker ip    # only on Mac OS X, on Linux you can use 127.0.0.1
     192.168.59.103
 
 Then you can open your browser and should see the rossetta 

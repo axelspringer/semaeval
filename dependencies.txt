@@ -9,7 +9,6 @@ pip install textrazor
 # for rss reader
 pip install pyaml
 pip install feedparser
-pip install beautifulsoup4
 
 # installing python-boilerpipe
 pip install JPype1

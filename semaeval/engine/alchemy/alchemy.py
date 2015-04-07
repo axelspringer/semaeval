@@ -10,7 +10,6 @@ config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
 
 labels = config["labels"]
 
-
 def convert_label(label):
 	if label in labels:
 		return labels[label]
