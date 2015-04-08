@@ -2,16 +2,13 @@
 from textrazor import TextRazor
 from textrazor import TextRazorAnalysisException
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-key = config["key"]
-labels = config["labels"]
+if "textrazor" in config.engines:
+	key = config.engines["textrazor"]["key"]
+	labels = config.engines["textrazor"]["labels"]
 
-client = TextRazor(api_key=key, extractors=["entities", "topics"])
+	client = TextRazor(api_key=key, extractors=["entities", "topics"])
 
 
 def convert_labels(label_list):

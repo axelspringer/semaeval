@@ -2,16 +2,13 @@
 import requests
 import json
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-key = config["key"]
-host = config["host"]
-server_cert = config["server_cert"]
-labels = config["labels"]
+if "retresco" in config.engines:
+	key = config.engines["retresco"]["key"]
+	host = config.engines["retresco"]["host"]
+	server_cert = config.engines["retresco"]["server_cert"]
+	labels = config.engines["retresco"]["labels"]
 
 
 def convert_label(label):
@@ -25,7 +22,7 @@ def convert_label(label):
 def extract_entities(text, lang):
 	entities = {}
 	data = {"body": text}
-	rp = requests.post(host + '/enrich?userkey=' + key, data=json.dumps(data), verify=os.path.join(__location__, server_cert))
+	rp = requests.post(host + '/enrich?userkey=' + key, data=json.dumps(data), verify=server_cert)
 	try:
 		result = rp.json()
 		categories = result["result"]["keywords"].items()

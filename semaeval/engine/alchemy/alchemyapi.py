@@ -33,10 +33,7 @@ except ImportError:
     # Older versions of Python (i.e. 2.4) require simplejson instead of json
     import simplejson as json
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+from ... import config
 
 if __name__ == '__main__':
     """
@@ -145,9 +142,8 @@ class AlchemyAPI:
 
         import sys
         try:
-            # Open the key file and read the key
-            f = open(os.path.join(__location__, "config.yml"), "r")
-            key = yaml.load(f)["key"]
+            if "alchemy" in config.engines:
+                key = config.engines["alchemy"]["key"]
 
             if key == '':
                 # The key file should't be blank
@@ -164,9 +160,6 @@ class AlchemyAPI:
             else:
                 # setup the key
                 self.apikey = key
-
-            # Close file
-            f.close()
         except IOError:
             # The file doesn't exist, so show the message and create the file.
             print(

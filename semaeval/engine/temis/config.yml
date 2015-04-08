@@ -1,8 +1,0 @@
-host: "http://193.28.233.173:8091"
-labels:
-  "/Entity/Person": "PERSON"
-  "/Entity/Location": "GEO"
-  "/Entity/Company" : "ORG"
-  "/Entity/Organisation": "ORG"
-  "/Entity/Media" : "ORG"
-  "/Entity/Function": "FUNCTION"

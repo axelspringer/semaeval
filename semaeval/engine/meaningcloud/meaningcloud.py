@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 import requests
-import json
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-key = config["key"]
-labels = config["labels"]
+if "meaningcloud" in config.engines:
+	key = config.engines["meaningcloud"]["key"]
+	labels = config.engines["meaningcloud"]["labels"]
 
 
 def convert_label(label):

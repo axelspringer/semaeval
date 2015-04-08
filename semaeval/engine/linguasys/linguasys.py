@@ -2,19 +2,16 @@
 import requests
 from xml.etree import ElementTree
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-key = config["key"]
-labels = config["labels"]
-langs = config["langs"]
+if "linguasys" in config.engines:
+	key = config.engines["linguasys"]["key"]
+	labels = config.engines["linguasys"]["labels"]
+	langs = config.engines["linguasys"]["langs"]
 
 
 def convert_label(label):
-	prefix="/".join(label.split("/")[:3])
+	prefix = "/".join(label.split("/")[:3])
 	if prefix in labels:
 		return labels[prefix]
 	else:

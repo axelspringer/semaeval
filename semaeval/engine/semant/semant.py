@@ -4,19 +4,16 @@ import semantria
 import uuid
 import time
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-key = config["key"]
-secret = config["secret"]
-labels = config["labels"]
-langs = config["langs"]
+if "semantria" in config.engines:
+	key = config.engines["semantria"]["key"]
+	secret = config.engines["semantria"]["secret"]
+	labels = config.engines["semantria"]["labels"]
+	langs = config.engines["semantria"]["langs"]
 
-serializer = semantria.JsonSerializer()
-session = semantria.Session(key, secret, serializer, use_compression=True)
+	serializer = semantria.JsonSerializer()
+	session = semantria.Session(key, secret, serializer, use_compression=True)
 
 
 def convert_label(label):
@@ -46,15 +43,15 @@ def extract_entities(text, lang):
 
 		while len(results) < 1:
 			time.sleep(2)
-			# get processed documents (you have use the same config_id as for queuing!)
+			# get processed documents (you have to use the same config_id as for queuing!)
 			status = session.getProcessedDocuments(config_id=config_id)
 			results.extend(status)
 
 		for data in results:
 			if "entities" in data:
 				for entity in data["entities"]:
-					key = entity['title']
-					value = convert_label(entity['entity_type'])
-					entities[key] = value
+					k = entity['title']
+					v = convert_label(entity['entity_type'])
+					entities[k] = v
 
 	return entities

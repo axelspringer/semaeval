@@ -1,0 +1,234 @@
+folder_input: "input"
+folder_output: "output"
+# categories can be one of these:
+# PERSON, GEO, ORG, PRODUCT, EVENT, KEYWORD, FUNCTION, NUMBER, DATE, CURRENCY, URL, QUOTE
+categories:
+  - PERSON
+  - GEO
+  - ORG
+engines:
+  simple:
+    labels:
+      "GPE": "GEO"
+      "LOCATION": "GEO"
+      "ORGANIZATION": "ORG"
+      "PERSON": "PERSON"
+      "FACILITY": "KEYWORD"
+      "GSP": "ORG"
+#  alchemy:
+#    key:
+#    # see http://www.alchemyapi.com/api/entity/types
+#    labels:
+#      "City": "GEO"
+#      "Facility": "GEO"
+#      "StateOrCounty": "GEO"
+#      "Country": "GEO"
+#      "Region": "GEO"
+#      "Continent": "GEO"
+#      "GeographicFeature": "GEO"
+#      "Person": "PERSON"
+#      "Company": "ORG"
+#      "Organization": "ORG"
+#      "PrintMedia": "ORG"
+#      "JobTitle": "FUNCTION"
+#      "Quantity": "NUMBER"
+#      "SportingEvent": "EVENT"
+#      "Drug": "KEYWORD"
+#      "HealthCondition": "KEYWORD"
+#      "FieldTerminology": "KEYWORD"
+#      "Sport": "KEYWORD"
+#      "Technology": "KEYWORD"
+#      "EntertainmentAward": "KEYWORD"
+#      "Holiday": "EVENT"
+#      "TelevisionStation": "ORG"
+#      "Crime": "KEYWORD"
+#  basistech:
+#    host:
+#    labels:
+#      "PERSON": "PERSON"
+#      "LOCATION": "GEO"
+#      "TITLE": "FUNCTION"
+#      "TEMPORAL:DATE": "DATE"
+#      "ORGANIZATION": "ORG"
+#      "IDENTIFIER:URL": "URL"
+#      "TEMPORAL:TIME": "DATE"
+#      "IDENTIFIER:DISTANCE": "NUMBER"
+#      "IDENTIFIER:MONEY": "CURRENCY"
+#      "RELIGION": "KEYWORD"
+#      "NATIONALITY": "KEYWORD"
+#      "PRODUCT": "PRODUCT"
+#  bitext:
+#    user:
+#    passwd:
+#    labels:
+#      19: "NUMBER"
+#      15: "CURRENCY"
+#      11: "DATE"
+#      10: "DATE"
+#      8: "URL"
+#      7: "ORG"
+#      6: "ORG"
+#      3: "GEO"
+#      1: "PERSON"
+#      0: "KEYWORD"
+#    langs:
+#      "en": "ENG"
+#      "de": "DEU"
+#      "es": "ESP"
+#      "pt": "POR"
+#      "it": "ITA"
+#      "fr": "FRA"
+#      "nl": "NLD"
+#      "ca": "CAT"
+#  linguasys:
+#    key:
+#    labels:
+#      "person" : "PERSON"
+#      "location": "GEO"
+#      "organisation": "ORG"
+#      "administrative unit": "ORG"
+#      "date" : "DATE"
+#      "time" : "DATE"
+#      "aspect" : "KEYWORD"
+#      "abbreviation" : "KEYWORD"
+#    # conversion from ISO_639-1 to linguasys language codes (see https://nlp.linguasys.com/Languages)
+#    langs:
+#      "en": "ENG"
+#  meaningcloud:
+#    key:
+#    labels:
+#      "Top>Location": "GEO"
+#      "Top>Person": "PERSON"
+#      "Top>Organization": "ORG"
+#      "Top>Product": "PRODUCT"
+#      "Top>Event": "EVENT"
+#      "Top>OtherEntity": "KEYWORD"
+#      "Top>Timex": "DATE"
+#      "Top": "KEYWORD"
+#  netowl:
+#    key:
+#    labels:
+#      "entity:person": "PERSON"
+#      "entity:place": "GEO"
+#      "entity:organization": "ORG"
+#      "entity:time": "DATE"
+#      "entity:other": "KEYWORD"
+#      "entity:numeric": "NUMBER"
+#      "entity:address": "URL"
+#      "entity:artifact": "PRODUCT"
+#    langs:
+#      "en":
+#      "fr":
+#  repustate:
+#    key:
+#    # see also here: https://www.repustate.com/media/entities.txt
+#    labels:
+#      "government.politician": "PERSON"
+#      "location.citytown": "GEO"
+#      "location.us_state": "GEO"
+#      "location.country": "GEO"
+#      "location.region": "GEO"
+#      "location.continent": "GEO"
+#      "location.nationality": "KEYWORD"
+#      "business.businessmen": "PERSON"
+#      "government.agency": "ORG"
+#      "government.political_party": "ORG"
+#      "government.us_presidents": "PERSON"
+#      "government.position": "FUNCTION"
+#      "business.job_title": "FUNCTION"
+#      "business.brand": "PRODUCT"
+#      "business.oil_and_gas_drilling_and_exploration": "ORG"
+#      "business.apparel_stores": "PRODUCT"
+#      "time.month": "DATE"
+#      "time.day": "DATE"
+#      "time.season": "DATE"
+#      "news.network": "ORG"
+#      "health.disease": "KEYWORD"
+#      "health.vaccine": "KEYWORD"
+#      "travel.hotel": "KEYWORD"
+#      "travel.accommodation": "KEYWORD"
+#      "health.physician": "PERSON"
+#      "sports.sports_team_coach": "PERSON"
+#      "sports.pro_athlete": "PERSON"
+#      "finance.currency": "CURRENCY"
+#      "automotive.model": "PRODUCT"
+#      "automotive.company": "ORG"
+#      "music.album": "PRODUCT"
+#  retresco:
+#    key:
+#    host:
+#    server_cert:
+#    labels:
+#      "geos": "GEO"
+#      "persons": "PERSON"
+#      "orgs": "ORG"
+#      "products": "PRODUCT"
+#      "keywords": "KEYWORD"
+#      "events": "EVENT"
+#  semantria:
+#    key:
+#    secret:
+#    # see http://support.semantria.com/customer/portal/articles/838464-entity-extraction
+#    labels:
+#      "Place": "GEO"
+#      "Person": "PERSON"
+#      "Product": "PRODUCT"
+#      "Company": "ORG"
+#      "Job Title": "FUNCTION"
+#      "Quote": "QUOTE"
+#      "Pattern": "KEYWORD"
+#      "vehicle": "PRODUCT"
+#    # in semantria the configuration is stored on the server and has an id
+#    # You can get the config id for a language via
+#    # for key in session.getConfigurations(): print key["language"],key["config_id"]
+#    langs:
+#      "ko":
+#      "it":
+#      "jp":
+#      "fr":
+#      "pt":
+#      "en":
+#      "ms":
+#      "de":
+#      "es":
+#      "zh":
+#  temis:
+#    host:
+#    labels:
+#      "/Entity/Person": "PERSON"
+#      "/Entity/Location": "GEO"
+#      "/Entity/Company" : "ORG"
+#      "/Entity/Organisation": "ORG"
+#      "/Entity/Media" : "ORG"
+#      "/Entity/Function": "FUNCTION"
+#  textrazor:
+#    key:
+#    # see also https://www.textrazor.com/types
+#    labels:
+#      "Place": "GEO"
+#      "Person": "PERSON"
+#      "Organisation" : "ORG"
+#      "Company": "ORG"
+#      "Disease": "KEYWORD"
+#      "Species": "KEYWORD"
+#      "AnatomicalStructure": "KEYWORD"
+#      "Drug": "KEYWORD"
+#      "ChemicalSubstance": "KEYWORD"
+#      "Work": "PRODUCT"
+#      "EthnicGroup": "KEYWORD"
+#      "Currency": "CURRENCY"
+#      "URL": "URL"
+#      "MeanOfTransportation": "PRODUCT"
+#      "Event": "EVENT"
+#      "Sport": "KEYWORD"
+#      "Holiday": "EVENT"
+#      "CelestialBody": "KEYWORD" # could also be GEO?
+#      "Language": "KEYWORD"
+#      "Activity": "EVENT"
+#      "Food": "PRODUCT"
+#      "TopicalConcept": "KEYWORD"
+#      "TimePeriod": "DATE"
+#      "Biomolecule": "KEYWORD"
+#      "Date": "DATE"
+#      "Flag": "KEYWORD"
+

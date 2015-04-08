@@ -1,7 +1,0 @@
-labels:
-  "GPE": "GEO"
-  "LOCATION": "GEO"
-  "ORGANIZATION": "ORG"
-  "PERSON": "PERSON"
-  "FACILITY": "KEYWORD"
-  "GSP": "ORG"

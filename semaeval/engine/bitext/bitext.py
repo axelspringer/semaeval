@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 import requests
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-user = config["user"]
-passwd = config["passwd"]
-labels = config["labels"]
-langs = config["langs"]
+if "bitext" in config.engines:
+	user = config.engines["bitext"]["user"]
+	passwd = config.engines["bitext"]["passwd"]
+	labels = config.engines["bitext"]["labels"]
+	langs = config.engines["bitext"]["langs"]
 
 def convert_label(label):
 	if label in labels:

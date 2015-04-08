@@ -2,14 +2,11 @@
 import requests
 from xml.etree import ElementTree
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import yaml
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
+from ... import config
 
-host = config["host"]
-labels = config["labels"]
+if "temis" in config.engines:
+	host = config.engines["temis"]["host"]
+	labels = config.engines["temis"]["labels"]
 
 
 def convert_label(label):

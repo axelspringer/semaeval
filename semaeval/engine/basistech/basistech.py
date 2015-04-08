@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
-import yaml
+from ... import config
 
-# see https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
-import os
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-config = yaml.load(open(os.path.join(__location__, "config.yml"), "r"))
-
-host = config["host"]
-labels = config["labels"]
+if "basistech" in config.engines:
+	host = config.engines["basistech"]["host"]
+	labels = config.engines["basistech"]["labels"]
 
 
 def convert_label(label):

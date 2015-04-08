@@ -33,15 +33,15 @@ store_dir = config.folder_out
 categories_analysed = config.categories
 
 # see http://stackoverflow.com/questions/14094802/construct-a-callable-object-from-a-string-representing-its-name-in-python
-engines = [globals()[engine] for engine in config.engines]
+engines = [globals()[engine] for engine in config.engines.keys()]
 
 # repustate: slow and buggy (a lot of Internal Server Errors (maybe due to word black lists))
 # linguasys: extremely slow , quota expired
 # temis: demo switched off
 
-engines.remove(repustate)
-engines.remove(linguasys)
-engines.remove(temis)
+# engines.remove(repustate)
+# engines.remove(linguasys)
+# engines.remove(temis)
 
 # if more than THRESHOLD engines return the same entity, we assume the entity is relevant
 THRESHOLD = 1
