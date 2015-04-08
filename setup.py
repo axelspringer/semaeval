@@ -16,6 +16,7 @@ setup(name='semaeval',
 		  'semantria_sdk',
 		  'textrazor',
 		  'nltk',
+		  'matplotlib',
 		  'boilerpipe'
 		  ],
 	  include_package_data=True,
