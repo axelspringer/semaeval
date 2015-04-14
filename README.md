@@ -29,7 +29,7 @@ Installation
 Make sure you have Python 2.7 with pip and setuptools installed. Then clone the git repository and execute
 the following commands in the repository folder:
 
-    pip install numpy
+    pip install numpy matplotlib
     python setup.py install
 
 This will install numpy and the semaeval package and all the necessary dependencies into your python environment.
