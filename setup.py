@@ -9,7 +9,7 @@ class Install(default_install):
 		nltk.download("all")
 
 setup(name='semaeval',
-	  version='0.1.1',
+	  version='0.1.2',
 	  description='Test and evaluate semantic engines.',
 	  url='https://as-stash.axelspringer.de/scm/ideas/semaeval.git',
 	  author='amaier1',
