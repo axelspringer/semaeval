@@ -44,7 +44,11 @@ def sstddev(l):
 
 
 def plot_results(data):
-	pyplot.style.use('ggplot')
+	try:
+		pyplot.style.use('ggplot')
+	except AttributeError:
+		import matplotlib
+		print "Matplotlib version", matplotlib.__version__ , "doesn't support 'ggplot' style. Fallback to default style."
 	pyplot.rcParams['figure.figsize'] = 14.0, 10.0
 	for number, category in enumerate(categories_analysed + ["TOTAL"]):
 		index = 0
