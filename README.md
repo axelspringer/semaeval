@@ -26,13 +26,39 @@ Semaeval also offers tools to get example texts from the following sources:
 Installation
 ------------
 
-Make sure you have Python 2.7 with pip and setuptools installed. Then clone the git repository and execute
-the following commands in the repository folder:
+Semaeval uses Python 2.7 and needs numpy and matplotlib installed. To install these dependencies
+you can do the following
 
-    pip install numpy matplotlib
+- Ubuntu/Debian:
+
+        apt-get update
+        apt-get install g++ git
+        apt-get install python-dev python-pip python-numpy python-matplotlib
+
+- Fedora/CentOS:
+
+        yum update
+        yum install gcc-c++ git
+        yum install python-devel numpy python-matplotlib
+
+- Mac OS X with Homebrew:
+
+        brew update
+        brew install git
+        brew install python
+        brew tap homebrew/python
+        brew install numpy
+        brew install matplotlib
+
+- Inside a virtual environment with Python 2.7 and pip/setuptools installed:
+
+        pip install numpy matplotlib
+
+Then clone the git repository and execute the following command in the repository folder:
+
     python setup.py install
 
-This will install numpy and the semaeval package and all the necessary dependencies into your python environment.
+This will install the semaeval package and all the other necessary dependencies into your python environment.
 
 To use the package you have to create a file `config.yml` holding the configuration for all the semantic engines
 you want to use. To do this copy the template file `config_template.yml` and edit it with an editor of your choice:
