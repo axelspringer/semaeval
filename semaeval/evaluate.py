@@ -51,7 +51,7 @@ def collect_results(text, engines, lang, debug=False):
 	try:
 		p = Pool(len(engines))
 		future = p.map_async(partial_extract, [engine.extract_entities for engine in engines])
-		# Wait for maximum of 30 seconds
+		# Wait for maximum of 60 seconds
 		all_entities = future.get(timeout=60)
 		# We need to terminate the pool manually
 		# Otherwise you get "IOError: [Errno 24] Too many open files"

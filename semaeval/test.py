@@ -23,16 +23,18 @@ test_text = u"Let's try to talk with Angela Merkel at the Brandenburger Tor in B
 # see http://stackoverflow.com/questions/14094802/construct-a-callable-object-from-a-string-representing-its-name-in-python
 engines = [globals()[engine] for engine in config.engines.keys()]
 
+
 # extract_function must be the first argument, because we will vary it with pool.map
 # see also https://stackoverflow.com/questions/24755463/functools-partial-wants-to-use-a-positional-argument-as-a-keyword-argument
-def run(extract_function, text, lang):
+def extract(extract_function, text, lang):
 	entities = extract_function(text, lang)
 	print ""
 	print extract_function.__module__
 	for key, value in entities.items():
 		print value, key
 
-if __name__ == '__main__':
+
+def run():
 	print test_text
 
 	# one process for each engine
@@ -40,7 +42,7 @@ if __name__ == '__main__':
 
 	# We need to use partial, since pool.map doesn't support functions with more than one argument
 	# https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments/5443941
-	partial_run = partial(run, text=test_text, lang="en")
+	partial_extract = partial(extract, text=test_text, lang="en")
 
 	start = time.time()
 	# Because of the limitations of pool.map we cannot use a module as parameter to the run method
@@ -48,9 +50,13 @@ if __name__ == '__main__':
 	# and https://stackoverflow.com/questions/1816958/cant-pickle-type-instancemethod-when-using-pythons-multiprocessing-pool-ma
 	# As a workaround we have to pass a function instead of a module or a class
 	# see https://stackoverflow.com/questions/7016567/picklingerror-when-using-multiprocessing
-	future = p.map_async(partial_run, [engine.extract_entities for engine in engines])
+	future = p.map_async(partial_extract, [engine.extract_entities for engine in engines])
 
-	future.get(timeout=10)
+	future.get(timeout=60)
 
 	end = time.time()
 	print end - start
+
+
+if __name__ == '__main__':
+	run()

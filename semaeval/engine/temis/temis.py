@@ -7,6 +7,7 @@ from ... import config
 if "temis" in config.engines:
 	host = config.engines["temis"]["host"]
 	labels = config.engines["temis"]["labels"]
+	plan = config.engines["temis"]["endpoint"]
 
 
 def convert_label(label):
@@ -21,7 +22,7 @@ def convert_label(label):
 def extract_entities(text, lang):
 	entities = {}
 	headers = {"content-type": "text/plain; charset=UTF-8", "accept-language": lang}
-	rp = requests.post(host + '/temis/v1/annotation/annotate/AS-test.xml?container=none', headers=headers, data=text.encode("utf-8"))
+	rp = requests.post(host + '/temis/v1/annotation/annotate/' + plan + '?container=none', headers=headers, data=text.encode("utf-8"))
 	xml = ElementTree.fromstring(rp.content)
 	for tag in xml.findall(".//knowledge[@name='Knowledge']//annotation"):
 		if "name" in tag.attrib:
