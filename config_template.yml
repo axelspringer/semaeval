@@ -194,6 +194,14 @@ engines:
 #      "zh":
 #  temis:
 #    host:
+#    # default endpoint
+#    endpoint:
+#    # Depending on your configuration Temis might offer
+#    # different endpoints for different languages
+#    langs:
+#      "en":
+#      "de":
+#      "fr":
 #    labels:
 #      "/Entity/Person": "PERSON"
 #      "/Entity/Location": "GEO"

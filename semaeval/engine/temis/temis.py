@@ -7,7 +7,8 @@ from ... import config
 if "temis" in config.engines:
 	host = config.engines["temis"]["host"]
 	labels = config.engines["temis"]["labels"]
-	plan = config.engines["temis"]["endpoint"]
+	langs = config.engines["temis"]["langs"]
+	endpoint = config.engines["temis"]["endpoint"]
 
 
 def convert_label(label):
@@ -15,12 +16,20 @@ def convert_label(label):
 	if prefix in labels:
 		return labels[prefix]
 	else:
-		print "temis",label
+		print "temis", label
 		return label
+
+
+def convert_lang(lang):
+	if lang in langs:
+		return langs[lang]
+	else:
+		return endpoint # default endpoint
 
 
 def extract_entities(text, lang):
 	entities = {}
+	plan = convert_lang(lang)
 	headers = {"content-type": "text/plain; charset=UTF-8", "accept-language": lang}
 	rp = requests.post(host + '/temis/v1/annotation/annotate/' + plan + '?container=none', headers=headers, data=text.encode("utf-8"))
 	xml = ElementTree.fromstring(rp.content)

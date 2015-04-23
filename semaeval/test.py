@@ -34,15 +34,20 @@ def extract(extract_function, text, lang):
 		print value, key
 
 
-def run():
-	print test_text
+def run(text=test_text, lang="en", engines=engines):
+
+	if not isinstance(text, unicode):
+		print "Text is not a unicode string!"
+		return
+
+	print text
 
 	# one process for each engine
 	p = Pool(len(engines))
 
 	# We need to use partial, since pool.map doesn't support functions with more than one argument
 	# https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments/5443941
-	partial_extract = partial(extract, text=test_text, lang="en")
+	partial_extract = partial(extract, text=text, lang=lang)
 
 	start = time.time()
 	# Because of the limitations of pool.map we cannot use a module as parameter to the run method
