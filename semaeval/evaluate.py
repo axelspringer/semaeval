@@ -35,9 +35,6 @@ categories_analysed = config.categories
 # see http://stackoverflow.com/questions/14094802/construct-a-callable-object-from-a-string-representing-its-name-in-python
 engines = [globals()[engine] for engine in config.engines.keys()]
 
-# if more than THRESHOLD engines return the same entity, we assume the entity is relevant
-THRESHOLD = 1
-
 def extract_entities(extract_function, text, lang):
 	print extract_function.__module__
 	return extract_function(text, lang)
@@ -89,7 +86,25 @@ def collect_results(text, engines, lang, debug=False):
 
 	return total, results
 
-def detect_entities(articles, lang):
+def detect_entities(articles, lang, threshold=1):
+	"""
+	Detects entities in the articles text and evaluates them as
+	true positive (TP, detected and relevant),
+	false positive(FP, detected, but not relevant),
+	true negative(TN, undetected and not relevant),
+	false negative (FN, undetected, but relevant).
+
+	To evaluate an entity as relevant the entities detected
+	by one engine for an article are compared to
+	the entities detected by all other engines for that article.
+	If the number of engines that agree on an entity is higher than
+	"threshold" the entity is assumed to be relevant.
+
+	:param articles: single article or list of articles
+	:param lang: language of the articles
+	:param threshold: relevance threshold (default=1)
+	:return:
+	"""
 	# see http://stackoverflow.com/questions/998938/handle-either-a-list-or-single-integer-as-an-argument
 	if type(articles) is not list: articles = [articles]
 
@@ -133,7 +148,7 @@ def detect_entities(articles, lang):
 					# if an entity has been detected more than THRESHOLD, we assume it is relevant,
 					# and so detecting it is a "true positive".
 					# Otherwise it is a "false positive".
-					if pool[category][entity] > THRESHOLD:
+					if pool[category][entity] > threshold:
 						output[category]["detected"].append({"TP": entity})
 					else:
 						output[category]["detected"].append({"FP": entity})
@@ -142,7 +157,7 @@ def detect_entities(articles, lang):
 						# if an entity has been detected more than THRESHOLD, we assume it is relevant,
 						# and so not detecting it is a "false negative".
 						# Otherwise it is a "true negative".
-						if pool[category][entity] > THRESHOLD:
+						if pool[category][entity] > threshold:
 							output[category]["undetected"].append({"FN": entity})
 						else:
 							output[category]["undetected"].append({"TN": entity})
